@@ -1,15 +1,15 @@
-add_library(example "")
+add_library(tonghe_cal "")
 
 target_sources(
-    example
+    tonghe_cal
     PRIVATE
-        example.cpp
+        tonghe_cal.cpp
     PUBLIC
-        ${CMAKE_CURRENT_LIST_DIR}/example.h
+        ${CMAKE_CURRENT_LIST_DIR}/tonghe_cal.h
     )
 
 target_include_directories(
-    example
+    tonghe_cal
     PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}
     )
