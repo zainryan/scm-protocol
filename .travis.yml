@@ -1,2 +1,16 @@
-language: cpp
-script: g++ main.cpp
+sudo: false
+
+language:
+  - cpp
+
+before_install:
+  - pip install --user cpp-coveralls
+
+script:
+  - cmake -H. -Bbuild
+  - cd build
+  - cmake --build .
+  - ctest
+
+after_success:
+  - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
