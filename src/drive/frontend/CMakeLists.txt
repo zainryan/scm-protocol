@@ -7,7 +7,7 @@ target_sources(cmd_splitter
 
 target_include_directories(cmd_splitter
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/inc
-        ${CMAKE_CURRENT_SOURCE_DIR}/third_party/hls/inc
-        ${CMAKE_CURRENT_SOURCE_DIR}/third_party/staccel/inc
+        ${CMAKE_SOURCE_DIR}/inc
+        ${CMAKE_SOURCE_DIR}/third_party/hls/inc
+        ${CMAKE_SOURCE_DIR}/third_party/staccel/inc
     )
