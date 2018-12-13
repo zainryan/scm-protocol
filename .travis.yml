@@ -5,6 +5,7 @@ language:
 
 before_install:
   - pip install --user cpp-coveralls
+  - sudo apt-get install libboost-thread-dev libboost-system-dev libboost-test-dev
 
 script:
   - cmake -H. -Bbuild
