@@ -6,9 +6,9 @@ language:
 before_install:
   - pip install --user cpp-coveralls
   - sudo apt-get install libboost-thread-dev libboost-system-dev libboost-test-dev
-  - sudo sed -i "s/.*boost::has_trivial_destructor.*//g" \
+  - sudo sed -i "s/.*boost::has_trivial_destructor.*//g"
     /usr/include/boost/lockfree/queue.hpp
-  - sudo sed -i "s/.*boost::has_trivial_assign.*//g" \
+  - sudo sed -i "s/.*boost::has_trivial_assign.*//g"
     /usr/include/boost/lockfree/queue.hpp
 
 script:
@@ -18,5 +18,5 @@ script:
   - ctest
 
 after_success:
-  - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*test/.*" \
+  - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*test/.*"
     -E "build/.*" -E "third_party/.*"
