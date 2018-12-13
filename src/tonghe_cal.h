@@ -1,6 +1,3 @@
-#ifndef TONGHE_H_
-#define TONGHE_H_
+#pragma once
 
 int tonghe_cal(int a, int b);
-
-#endif
