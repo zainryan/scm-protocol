@@ -2,12 +2,14 @@ add_executable(
     unit_tests
     example_add.cpp
     example_subtract.cpp
+    tonghe_cal_test.cpp
     )
 
 target_link_libraries(
     unit_tests
     gtest_main
     example
+    tonghe_cal
     )
 
 add_test(
