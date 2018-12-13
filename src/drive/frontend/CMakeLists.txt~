@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.12)
+
+add_library(cmd_splitter "")
+
+set_target_properties(cmd_splitter PROPERTIES
+    CXX_STANDARD 11
+    CXX_STANDARD_REQUIRED YES
+    CXX_EXTENSIONS NO
+)
+
+target_sources(cmd_splitter
+    PRIVATE
+        cmd_splitter.cpp
+    )
+
+target_include_directories(cmd_splitter
+    PUBLIC
+	../../../inc
+	../../../third_party/hls/inc
+        ../../../third_party/staccel/inc
+    )
