@@ -1,8 +1,8 @@
 #ifndef STACCEL_ITC_H_
 #define STACCEL_ITC_H_
 
-#include "staccel_fifo.h"
 #include "staccel_type.h"
+#include "staccel_fifo.h"
 
 #ifndef STACCEL_SYN
 #include <map>
