@@ -19,4 +19,4 @@ script:
 
 after_success:
   - coveralls --root .. -E ".*CMakeFiles.*" -E ".*test/.*" -E "build/.*" 
-    -E "third_party/.*"
+    -E "third_party"
