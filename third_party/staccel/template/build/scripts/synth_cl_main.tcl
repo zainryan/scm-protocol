@@ -79,8 +79,6 @@ read_ip [ list \
 #Read IP for virtual jtag / ILA/VIO
 read_ip [ list \
   $HDK_SHELL_DESIGN_DIR/ip/cl_debug_bridge/cl_debug_bridge.xci \
-  $HDK_SHELL_DESIGN_DIR/ip/ila_1/ila_1.xci \
-  $HDK_SHELL_DESIGN_DIR/ip/ila_vio_counter/ila_vio_counter.xci \
   $HDK_SHELL_DESIGN_DIR/ip/vio_0/vio_0.xci
 ]
 
