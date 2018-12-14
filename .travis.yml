@@ -15,7 +15,7 @@ script:
   - cmake -H. -Bbuild
   - cd build
   - cmake --build .
-  - ctest
+  - ctest -V
 
 after_success:
   - coveralls --root .. -E ".*CMakeFiles.*" --exclude test --exclude build
