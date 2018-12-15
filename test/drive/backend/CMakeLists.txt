@@ -1,28 +1,25 @@
 add_executable(
-    frontend_unit_tests
-    cmd_splitter.cpp
-    pcis_handler.cpp
+    backend_unit_tests
+    throttle_unit.cpp
     )
 
 target_link_libraries(
-    frontend_unit_tests
+    backend_unit_tests
     gtest_main
-    cmd_splitter
-    pcis_handler
     )
 
 add_test(
   NAME
-    frontend_unit
+    backend_unit
   COMMAND
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/frontend_unit_tests
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/backend_unit_tests
   )
 
 target_include_directories(
-    frontend_unit_tests
+    backend_unit_tests
     PUBLIC
     ${CMAKE_SOURCE_DIR}/inc
-    ${CMAKE_SOURCE_DIR}/src/drive/frontend/
+    ${CMAKE_SOURCE_DIR}/src/drive/backend/
     ${CMAKE_SOURCE_DIR}/test/inc/
     ${CMAKE_SOURCE_DIR}/third_party/hls/inc
     ${CMAKE_SOURCE_DIR}/third_party/staccel/inc
