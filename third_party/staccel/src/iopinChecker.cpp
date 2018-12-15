@@ -270,6 +270,19 @@ void setup() {
       "input   dramD_write_req_apply_V_addr_full_n;";
   neccessaryPinsMap["dramD_write_req_apply_V_addr_write"] =
       "output   dramD_write_req_apply_V_addr_write;";
+
+  neccessaryPinsMap["pcis_write_req_V_data_dout"] =
+    "input   [511:0] pcis_write_req_V_data_dout;";
+  neccessaryPinsMap["pcis_write_req_V_data_empty_n"] =
+    "input   pcis_write_req_V_data_empty_n;";
+  neccessaryPinsMap["pcis_write_req_V_data_read"] =
+    "output   pcis_write_req_V_data_read;";
+  neccessaryPinsMap["pcis_write_req_V_addr_dout"] =
+    "input   [63:0] pcis_write_req_V_addr_dout;";
+  neccessaryPinsMap["pcis_write_req_V_addr_empty_n"] =
+    "input   pcis_write_req_V_addr_empty_n;";
+  neccessaryPinsMap["pcis_write_req_V_addr_read"] =
+    "output   pcis_write_req_V_addr_read;";
 }
 
 string eliminateSpc(string str) {

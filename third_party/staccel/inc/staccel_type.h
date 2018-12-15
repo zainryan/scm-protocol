@@ -79,4 +79,9 @@ struct Dram_Read_Req {
   unsigned long long addr;
 };
 
+struct PCIS_Write_Req {
+  unsigned long long addr;
+  ap_uint<512> data;
+};
+
 #endif
