@@ -19,7 +19,6 @@ target_include_directories(
     backend_unit_tests
     PUBLIC
     ${CMAKE_SOURCE_DIR}/inc
-    ${CMAKE_SOURCE_DIR}/src/drive/backend/
     ${CMAKE_SOURCE_DIR}/test/inc/
     ${CMAKE_SOURCE_DIR}/third_party/hls/inc
     ${CMAKE_SOURCE_DIR}/third_party/staccel/inc
