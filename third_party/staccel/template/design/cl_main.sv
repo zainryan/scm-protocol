@@ -1,8 +1,7 @@
 module cl_main
-  (
+(
 `include "cl_ports.vh" // Fixed port definition
-
-   );
+);
 
 `include "cl_common_defines.vh"      // CL Defines for all examples
 `include "cl_id_defines.vh"          // Defines for ID0 and ID1 (PCI ID's)
