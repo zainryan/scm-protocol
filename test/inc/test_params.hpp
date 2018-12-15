@@ -1,0 +1,3 @@
+#pragma once
+
+#define DRAIN_QUEUE_READ_TIMES 100000000L
