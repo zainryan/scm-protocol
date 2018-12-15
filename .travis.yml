@@ -18,6 +18,5 @@ script:
   - ctest
 
 after_success:
-  - coveralls --root .. -E ".*CMakeFiles.*" --exclude test --exclude build
-    --exclude third_party --exclude cmake --exclude README.md --exclude LICENSE
-    --exclude .travis.yml
+  - coveralls --root .. -E ".*CMakeFiles.*" -E ".*test/.*" -E "build/.*"
+    --exclude third_party
