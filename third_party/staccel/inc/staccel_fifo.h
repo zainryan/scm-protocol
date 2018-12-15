@@ -37,6 +37,9 @@ ST_Queue<Poke_Info> poke(1);
 ST_Queue<Peek_Info> peek_req(1);
 ST_Queue<Peek_Info> peek_resp(1);
 
+// PCIS interface
+ST_Queue<PCIS_Write_Req> pcis_write_req(1);
+
 #else
 // DRAM-A interface
 hls::stream<Dram_Read_Req> dramA_read_req;
@@ -72,6 +75,10 @@ hls::stream<PCIe_Write_Req_Apply> pcie_write_req_apply;
 hls::stream<Poke_Info> poke;
 hls::stream<Peek_Info> peek_req;
 hls::stream<Peek_Info> peek_resp;
+
+// PCIS interface
+hls::stream<PCIS_Write_Req> pcis_write_req;
+
 #endif
 
 #endif
