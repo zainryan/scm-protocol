@@ -4,7 +4,7 @@ language:
   - cpp
 
 before_install:
-  - pip install --user cpp-coveralls
+  - pip install --user cpp-coveralls cpplint
   - sudo apt-get install libboost-thread-dev libboost-system-dev libboost-test-dev
   - sudo sed -i "s/.*boost::has_trivial_destructor.*//g"
     /usr/include/boost/lockfree/queue.hpp
@@ -16,6 +16,7 @@ script:
   - cd build
   - cmake --build .
   - ctest -V
+  - cpplint --recursive --extensions=c,cpp,h,hpp,cxx,hxx inc src test
 
 after_success:
   - coveralls --root .. -E ".*CMakeFiles.*" --exclude test --exclude build
