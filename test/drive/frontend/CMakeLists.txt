@@ -1,12 +1,14 @@
 add_executable(
     unit_tests
     cmd_splitter.cpp
+    pcis_handler.cpp
     )
 
 target_link_libraries(
     unit_tests
     gtest_main
     cmd_splitter
+    pcis_handler
     )
 
 add_test(

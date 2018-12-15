@@ -2,6 +2,9 @@
 #define STACCEL_TYPE_
 
 #define _Bool bool
+#define DRAM_BUS_WIDTH (512)
+#define PCIE_BUS_WIDTH (512)
+#define PCIS_BUS_WIDTH (512)
 
 #include <ap_int.h>
 #ifdef STACCEL_SYN
@@ -41,7 +44,7 @@ struct Poke_Info {
 
 struct PCIe_Write_Req_Data {
   bool last;
-  ap_uint<512> data;
+  ap_uint<PCIE_BUS_WIDTH> data;
 };
 
 struct PCIe_Write_Req_Apply {
@@ -51,7 +54,7 @@ struct PCIe_Write_Req_Apply {
 
 struct PCIe_Read_Resp {
   bool last;
-  ap_uint<512> data;
+  ap_uint<PCIE_BUS_WIDTH> data;
 };
 
 struct PCIe_Read_Req {
@@ -61,7 +64,7 @@ struct PCIe_Read_Req {
 
 struct Dram_Write_Req_Data {
   bool last;
-  ap_uint<512> data;
+  ap_uint<DRAM_BUS_WIDTH> data;
 };
 
 struct Dram_Write_Req_Apply {
@@ -71,7 +74,7 @@ struct Dram_Write_Req_Apply {
 
 struct Dram_Read_Resp {
   bool last;
-  ap_uint<512> data;
+  ap_uint<DRAM_BUS_WIDTH> data;
 };
 
 struct Dram_Read_Req {
@@ -81,7 +84,7 @@ struct Dram_Read_Req {
 
 struct PCIS_Write_Req {
   unsigned long long addr;
-  ap_uint<512> data;
+  ap_uint<PCIS_BUS_WIDTH> data;
 };
 
 #endif
