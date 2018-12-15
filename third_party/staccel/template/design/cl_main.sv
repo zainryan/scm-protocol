@@ -1,8 +1,7 @@
 module cl_main
-  (
+(
 `include "cl_ports.vh" // Fixed port definition
-
-   );
+);
 
 `include "cl_common_defines.vh"      // CL Defines for all examples
 `include "cl_id_defines.vh"          // Defines for ID0 and ID1 (PCI ID's)
@@ -51,13 +50,13 @@ module cl_main
    always_ff @(negedge pipe_rst_n or posedge clk_main_a0)
      if (!pipe_rst_n)
        begin
-	  pre_sync_rst_n <= 0;
-	  rst_main_n_sync <= 0;
+	      pre_sync_rst_n <= 0;
+	      rst_main_n_sync <= 0;
        end
      else
        begin
-	  pre_sync_rst_n <= 1;
-	  rst_main_n_sync <= pre_sync_rst_n;
+	      pre_sync_rst_n <= 1;
+	      rst_main_n_sync <= pre_sync_rst_n;
        end 
    //-------------------------------------------------
    // PCIe OCL AXI-L (SH to CL) Timing Flops
@@ -138,44 +137,44 @@ module cl_main
    // Write Response
    always_ff @(posedge clk_main_a0) begin
       if (!rst_main_n_sync) begin
-	 ocl_sh_bvalid_q <= 0;
+	     ocl_sh_bvalid_q <= 0;
       end
       else begin
-	 ocl_sh_bvalid_q <=  ocl_sh_bvalid_q && sh_ocl_bready_q ? 1'b0  :
-			     ~ocl_sh_bvalid_q && sh_ocl_wvalid_q && ocl_sh_wready_q ? 1'b1  :
-			     ocl_sh_bvalid_q;
+	     ocl_sh_bvalid_q <=  ocl_sh_bvalid_q && sh_ocl_bready_q ? 1'b0  :
+			                 ~ocl_sh_bvalid_q && sh_ocl_wvalid_q && ocl_sh_wready_q ? 1'b1  :
+			                 ocl_sh_bvalid_q;
       end
    end
 
    logic [15:0] cl_sh_pcim_awid_q;
    logic [63:0] cl_sh_pcim_awaddr_q;
-   logic [7:0] 	cl_sh_pcim_awlen_q;
-   logic [2:0] 	cl_sh_pcim_awsize_q;
+   logic [7:0]  cl_sh_pcim_awlen_q;
+   logic [2:0]  cl_sh_pcim_awsize_q;
    logic [18:0] cl_sh_pcim_awuser_q;
    logic        cl_sh_pcim_awvalid_q;
-   logic 	sh_cl_pcim_awready_q;
+   logic        sh_cl_pcim_awready_q;
    logic [511:0] cl_sh_pcim_wdata_q;
    logic [63:0]  cl_sh_pcim_wstrb_q;
-   logic 	 cl_sh_pcim_wlast_q;
-   logic 	 cl_sh_pcim_wvalid_q;
-   logic 	 sh_cl_pcim_wready_q;
+   logic         cl_sh_pcim_wlast_q;
+   logic         cl_sh_pcim_wvalid_q;
+   logic         sh_cl_pcim_wready_q;
    logic [15:0]  sh_cl_pcim_bid_q;
-   logic [1:0] 	 sh_cl_pcim_bresp_q;
-   logic 	 sh_cl_pcim_bvalid_q;
-   logic 	 cl_sh_pcim_bready_q;
+   logic [1:0]   sh_cl_pcim_bresp_q;
+   logic         sh_cl_pcim_bvalid_q;
+   logic         cl_sh_pcim_bready_q;
    logic [15:0]  cl_sh_pcim_arid_q;
    logic [63:0]  cl_sh_pcim_araddr_q;
-   logic [7:0] 	 cl_sh_pcim_arlen_q;
-   logic [2:0] 	 cl_sh_pcim_arsize_q;
+   logic [7:0]   cl_sh_pcim_arlen_q;
+   logic [2:0]   cl_sh_pcim_arsize_q;
    logic [18:0]  cl_sh_pcim_aruser_q;
-   logic 	 cl_sh_pcim_arvalid_q;
-   logic 	 sh_cl_pcim_arready_q;
+   logic         cl_sh_pcim_arvalid_q;
+   logic         sh_cl_pcim_arready_q;
    logic [15:0]  sh_cl_pcim_rid_q;
    logic [511:0] sh_cl_pcim_rdata_q;
-   logic [1:0] 	 sh_cl_pcim_rresp_q;
-   logic 	 sh_cl_pcim_rlast_q;
-   logic 	 sh_cl_pcim_rvalid_q;
-   logic 	 cl_sh_pcim_rready_q;
+   logic [1:0]   sh_cl_pcim_rresp_q;
+   logic         sh_cl_pcim_rlast_q;
+   logic         sh_cl_pcim_rvalid_q;
+   logic         cl_sh_pcim_rready_q;
    
    assign cl_sh_pcim_awid_q = 0;
    assign cl_sh_pcim_awsize_q = 3'b110;
@@ -193,20 +192,20 @@ module cl_main
    // PCIe Write Registers
    
    // input to interconnect
-   logic 	 pcie_write_req_data_V_last_full_n;
-   logic 	 pcie_write_req_data_V_data_V_full_n;
-   logic 	 pcie_write_req_apply_V_num_full_n;
-   logic 	 pcie_write_req_apply_V_addr_full_n;
+   logic         pcie_write_req_data_V_last_full_n;
+   logic         pcie_write_req_data_V_data_V_full_n;
+   logic         pcie_write_req_apply_V_num_full_n;
+   logic         pcie_write_req_apply_V_addr_full_n;
    
    // output from interconnect
-   logic 	 pcie_write_req_data_V_last_din;
-   logic 	 pcie_write_req_data_V_last_write;
+   logic         pcie_write_req_data_V_last_din;
+   logic         pcie_write_req_data_V_last_write;
    logic [511:0] pcie_write_req_data_V_data_V_din;
-   logic 	 pcie_write_req_data_V_data_V_write;
+   logic         pcie_write_req_data_V_data_V_write;
    logic [63:0]  pcie_write_req_apply_V_addr_din;
-   logic 	 pcie_write_req_apply_V_addr_write;
-   logic [7:0] 	 pcie_write_req_apply_V_num_din;
-   logic 	 pcie_write_req_apply_V_num_write;
+   logic         pcie_write_req_apply_V_addr_write;
+   logic [7:0]   pcie_write_req_apply_V_num_din;
+   logic         pcie_write_req_apply_V_num_write;
 
    // glue logic
    assign cl_sh_pcim_awaddr_q = pcie_write_req_apply_V_addr_din;
@@ -225,19 +224,19 @@ module cl_main
 
    // input to interconnect
    logic [511:0] pcie_read_resp_V_data_V_dout;
-   logic 	 pcie_read_resp_V_data_V_empty_n;
-   logic 	 pcie_read_resp_V_last_dout;
-   logic 	 pcie_read_resp_V_last_empty_n;
-   logic 	 pcie_read_req_V_num_full_n;
-   logic 	 pcie_read_req_V_addr_full_n;
+   logic         pcie_read_resp_V_data_V_empty_n;
+   logic         pcie_read_resp_V_last_dout;
+   logic         pcie_read_resp_V_last_empty_n;
+   logic         pcie_read_req_V_num_full_n;
+   logic         pcie_read_req_V_addr_full_n;
    
    // output from interconnect
-   logic [7:0] 	 pcie_read_req_V_num_din;
-   logic 	 pcie_read_req_V_num_write;
+   logic [7:0]   pcie_read_req_V_num_din;
+   logic         pcie_read_req_V_num_write;
    logic [63:0]  pcie_read_req_V_addr_din;
-   logic 	 pcie_read_req_V_addr_write;
-   logic 	 pcie_read_resp_V_last_read;
-   logic 	 pcie_read_resp_V_data_V_read;
+   logic         pcie_read_req_V_addr_write;
+   logic         pcie_read_resp_V_last_read;
+   logic         pcie_read_resp_V_data_V_read;
 
    // glue logic
    assign cl_sh_pcim_arid_q = 0;
@@ -263,17 +262,17 @@ module cl_main
    logic [31:0]  poke_V_data_dout;   
    logic         poke_V_data_empty_n;
    logic [31:0]  poke_V_tag_dout;
-   logic 	 poke_V_tag_empty_n;
-   logic 	 peek_req_V_empty_n;
+   logic         poke_V_tag_empty_n;
+   logic         peek_req_V_empty_n;
    logic [31:0]  peek_req_V_rd_data;
-   logic 	 peek_resp_V_full_n;
+   logic         peek_resp_V_full_n;
    
    // output from interconnect
    logic         poke_V_data_read;
-   logic 	 poke_V_tag_read;
-   logic 	 peek_req_V_rd_en;
+   logic         poke_V_tag_read;
+   logic         peek_req_V_rd_en;
    logic [31:0]  peek_resp_V_wr_data;
-   logic 	 peek_resp_V_wr_en;
+   logic         peek_resp_V_wr_en;
 
    // Peek-Poke/CL glue logic
    assign poke_V_tag_dout = sh_ocl_awaddr_q;   
@@ -291,14 +290,14 @@ module cl_main
    assign ocl_sh_rvalid_q = peek_resp_V_wr_en;
    assign peek_resp_V_full_n = sh_ocl_rready_q;
    
-   logic 	 interconnects_start;
+   logic         interconnects_start;
    
    
    always @ (posedge clk_main_a0) begin
       if (!rst_main_n_sync) begin
-	 interconnects_start <= 1'b0;
+	     interconnects_start <= 1'b0;
       end else begin
-	 interconnects_start <= 1'b1;
+	     interconnects_start <= 1'b1;
       end
    end
    
@@ -367,163 +366,163 @@ module cl_main
    //-------------------------------------------------
    logic [15:0] cl_sh_ddr_awid_abd[2:0];
    logic [63:0] cl_sh_ddr_awaddr_abd[2:0];
-   logic [7:0] 	cl_sh_ddr_awlen_abd[2:0];
-   logic [2:0] 	cl_sh_ddr_awsize_abd[2:0];
-   logic 	cl_sh_ddr_awvalid_abd [2:0];
-   logic [2:0] 	sh_cl_ddr_awready_abd;
+   logic [7:0]  cl_sh_ddr_awlen_abd[2:0];
+   logic [2:0]  cl_sh_ddr_awsize_abd[2:0];
+   logic        cl_sh_ddr_awvalid_abd [2:0];
+   logic [2:0]  sh_cl_ddr_awready_abd;
 
    logic [15:0] cl_sh_ddr_wid_abd[2:0];
    logic [511:0] cl_sh_ddr_wdata_abd[2:0];
    logic [63:0]  cl_sh_ddr_wstrb_abd[2:0];
-   logic [2:0] 	 cl_sh_ddr_wlast_abd;
-   logic [2:0] 	 cl_sh_ddr_wvalid_abd;
-   logic [2:0] 	 sh_cl_ddr_wready_abd;
+   logic [2:0]   cl_sh_ddr_wlast_abd;
+   logic [2:0]   cl_sh_ddr_wvalid_abd;
+   logic [2:0]   sh_cl_ddr_wready_abd;
 
    logic [15:0]  sh_cl_ddr_bid_abd[2:0];
-   logic [1:0] 	 sh_cl_ddr_bresp_abd[2:0];
-   logic [2:0] 	 sh_cl_ddr_bvalid_abd;
-   logic [2:0] 	 cl_sh_ddr_bready_abd;
+   logic [1:0]   sh_cl_ddr_bresp_abd[2:0];
+   logic [2:0]   sh_cl_ddr_bvalid_abd;
+   logic [2:0]   cl_sh_ddr_bready_abd;
 
    logic [15:0]  cl_sh_ddr_arid_abd[2:0];
    logic [63:0]  cl_sh_ddr_araddr_abd[2:0];
-   logic [7:0] 	 cl_sh_ddr_arlen_abd[2:0];
-   logic [2:0] 	 cl_sh_ddr_arsize_abd[2:0];
-   logic [2:0] 	 cl_sh_ddr_arvalid_abd;
-   logic [2:0] 	 sh_cl_ddr_arready_abd;
+   logic [7:0]   cl_sh_ddr_arlen_abd[2:0];
+   logic [2:0]   cl_sh_ddr_arsize_abd[2:0];
+   logic [2:0]   cl_sh_ddr_arvalid_abd;
+   logic [2:0]   sh_cl_ddr_arready_abd;
 
    logic [15:0]  sh_cl_ddr_rid_abd[2:0];
    logic [511:0] sh_cl_ddr_rdata_abd[2:0];
-   logic [1:0] 	 sh_cl_ddr_rresp_abd[2:0];
-   logic [2:0] 	 sh_cl_ddr_rlast_abd;
-   logic [2:0] 	 sh_cl_ddr_rvalid_abd;
-   logic [2:0] 	 cl_sh_ddr_rready_abd;
+   logic [1:0]   sh_cl_ddr_rresp_abd[2:0];
+   logic [2:0]   sh_cl_ddr_rlast_abd;
+   logic [2:0]   sh_cl_ddr_rvalid_abd;
+   logic [2:0]   cl_sh_ddr_rready_abd;
    
-   logic [2:0] 	 sh_cl_ddr_is_ready_abd;
+   logic [2:0]   sh_cl_ddr_is_ready_abd;
 
    logic [15:0]  cl_sh_ddr_awid_abd_q[2:0];
    logic [63:0]  cl_sh_ddr_awaddr_abd_q[2:0];
-   logic [7:0] 	 cl_sh_ddr_awlen_abd_q[2:0];
-   logic [2:0] 	 cl_sh_ddr_awsize_abd_q[2:0];
-   logic 	 cl_sh_ddr_awvalid_abd_q [2:0];
-   logic [2:0] 	 sh_cl_ddr_awready_abd_q;
+   logic [7:0]   cl_sh_ddr_awlen_abd_q[2:0];
+   logic [2:0]   cl_sh_ddr_awsize_abd_q[2:0];
+   logic         cl_sh_ddr_awvalid_abd_q [2:0];
+   logic [2:0]   sh_cl_ddr_awready_abd_q;
 
    logic [15:0]  cl_sh_ddr_wid_abd_q[2:0];
    logic [511:0] cl_sh_ddr_wdata_abd_q[2:0];
    logic [63:0]  cl_sh_ddr_wstrb_abd_q[2:0];
-   logic [2:0] 	 cl_sh_ddr_wlast_abd_q;
-   logic [2:0] 	 cl_sh_ddr_wvalid_abd_q;
-   logic [2:0] 	 sh_cl_ddr_wready_abd_q;
+   logic [2:0]   cl_sh_ddr_wlast_abd_q;
+   logic [2:0]   cl_sh_ddr_wvalid_abd_q;
+   logic [2:0]   sh_cl_ddr_wready_abd_q;
 
    logic [15:0]  sh_cl_ddr_bid_abd_q[2:0];
-   logic [1:0] 	 sh_cl_ddr_bresp_abd_q[2:0];
-   logic [2:0] 	 sh_cl_ddr_bvalid_abd_q;
-   logic [2:0] 	 cl_sh_ddr_bready_abd_q;
+   logic [1:0]   sh_cl_ddr_bresp_abd_q[2:0];
+   logic [2:0]   sh_cl_ddr_bvalid_abd_q;
+   logic [2:0]   cl_sh_ddr_bready_abd_q;
 
    logic [15:0]  cl_sh_ddr_arid_abd_q[2:0];
    logic [63:0]  cl_sh_ddr_araddr_abd_q[2:0];
-   logic [7:0] 	 cl_sh_ddr_arlen_abd_q[2:0];
-   logic [2:0] 	 cl_sh_ddr_arsize_abd_q[2:0];
-   logic [2:0] 	 cl_sh_ddr_arvalid_abd_q;
-   logic [2:0] 	 sh_cl_ddr_arready_abd_q;
+   logic [7:0]   cl_sh_ddr_arlen_abd_q[2:0];
+   logic [2:0]   cl_sh_ddr_arsize_abd_q[2:0];
+   logic [2:0]   cl_sh_ddr_arvalid_abd_q;
+   logic [2:0]   sh_cl_ddr_arready_abd_q;
 
    logic [15:0]  sh_cl_ddr_rid_abd_q[2:0];
    logic [511:0] sh_cl_ddr_rdata_abd_q[2:0];
-   logic [1:0] 	 sh_cl_ddr_rresp_abd_q[2:0];
-   logic [2:0] 	 sh_cl_ddr_rlast_abd_q;
-   logic [2:0] 	 sh_cl_ddr_rvalid_abd_q;
-   logic [2:0] 	 cl_sh_ddr_rready_abd_q;
+   logic [1:0]   sh_cl_ddr_rresp_abd_q[2:0];
+   logic [2:0]   sh_cl_ddr_rlast_abd_q;
+   logic [2:0]   sh_cl_ddr_rvalid_abd_q;
+   logic [2:0]   cl_sh_ddr_rready_abd_q;
    
-   logic [2:0] 	 sh_cl_ddr_is_ready_abd_q;
+   logic [2:0]   sh_cl_ddr_is_ready_abd_q;
    
-   logic [7:0] 	 dramA_read_req_V_num_din;
-   logic 	 dramA_read_req_V_num_full_n;
-   logic 	 dramA_read_req_V_num_write;
+   logic [7:0]   dramA_read_req_V_num_din;
+   logic         dramA_read_req_V_num_full_n;
+   logic         dramA_read_req_V_num_write;
    logic [63:0]  dramA_read_req_V_addr_din;
-   logic 	 dramA_read_req_V_addr_full_n;
-   logic 	 dramA_read_req_V_addr_write;
+   logic         dramA_read_req_V_addr_full_n;
+   logic         dramA_read_req_V_addr_write;
 
-   logic 	 dramA_read_resp_V_last_dout;
-   logic 	 dramA_read_resp_V_last_empty_n;
-   logic 	 dramA_read_resp_V_last_read;
+   logic         dramA_read_resp_V_last_dout;
+   logic         dramA_read_resp_V_last_empty_n;
+   logic         dramA_read_resp_V_last_read;
    logic [511:0] dramA_read_resp_V_data_V_dout;
-   logic 	 dramA_read_resp_V_data_V_empty_n;
-   logic 	 dramA_read_resp_V_data_V_read;
+   logic         dramA_read_resp_V_data_V_empty_n;
+   logic         dramA_read_resp_V_data_V_read;
 
-   logic 	 dramA_write_req_data_V_last_din;
-   logic 	 dramA_write_req_data_V_last_full_n;
-   logic 	 dramA_write_req_data_V_last_write;
+   logic         dramA_write_req_data_V_last_din;
+   logic         dramA_write_req_data_V_last_full_n;
+   logic         dramA_write_req_data_V_last_write;
    logic [511:0] dramA_write_req_data_V_data_V_din;
-   logic 	 dramA_write_req_data_V_data_V_full_n;
-   logic 	 dramA_write_req_data_V_data_V_write;
+   logic         dramA_write_req_data_V_data_V_full_n;
+   logic         dramA_write_req_data_V_data_V_write;
 
-   logic [7:0] 	 dramA_write_req_apply_V_num_din;
-   logic 	 dramA_write_req_apply_V_num_full_n;
-   logic 	 dramA_write_req_apply_V_num_write;
+   logic [7:0]   dramA_write_req_apply_V_num_din;
+   logic         dramA_write_req_apply_V_num_full_n;
+   logic         dramA_write_req_apply_V_num_write;
    logic [63:0]  dramA_write_req_apply_V_addr_din;
-   logic 	 dramA_write_req_apply_V_addr_full_n;
-   logic 	 dramA_write_req_apply_V_addr_write;
+   logic         dramA_write_req_apply_V_addr_full_n;
+   logic         dramA_write_req_apply_V_addr_write;
    
-   logic [7:0] 	 dramB_read_req_V_num_din;
-   logic 	 dramB_read_req_V_num_full_n;
-   logic 	 dramB_read_req_V_num_write;
+   logic [7:0]   dramB_read_req_V_num_din;
+   logic         dramB_read_req_V_num_full_n;
+   logic         dramB_read_req_V_num_write;
    logic [63:0]  dramB_read_req_V_addr_din;
-   logic 	 dramB_read_req_V_addr_full_n;
-   logic 	 dramB_read_req_V_addr_write;
+   logic         dramB_read_req_V_addr_full_n;
+   logic         dramB_read_req_V_addr_write;
 
-   logic 	 dramB_read_resp_V_last_dout;
-   logic 	 dramB_read_resp_V_last_empty_n;
-   logic 	 dramB_read_resp_V_last_read;
+   logic         dramB_read_resp_V_last_dout;
+   logic         dramB_read_resp_V_last_empty_n;
+   logic         dramB_read_resp_V_last_read;
    logic [511:0] dramB_read_resp_V_data_V_dout;
-   logic 	 dramB_read_resp_V_data_V_empty_n;
-   logic 	 dramB_read_resp_V_data_V_read;
+   logic         dramB_read_resp_V_data_V_empty_n;
+   logic         dramB_read_resp_V_data_V_read;
 
-   logic 	 dramB_write_req_data_V_last_din;
-   logic 	 dramB_write_req_data_V_last_full_n;
-   logic 	 dramB_write_req_data_V_last_write;
+   logic         dramB_write_req_data_V_last_din;
+   logic         dramB_write_req_data_V_last_full_n;
+   logic         dramB_write_req_data_V_last_write;
    logic [511:0] dramB_write_req_data_V_data_V_din;
-   logic 	 dramB_write_req_data_V_data_V_full_n;
-   logic 	 dramB_write_req_data_V_data_V_write;
+   logic         dramB_write_req_data_V_data_V_full_n;
+   logic         dramB_write_req_data_V_data_V_write;
 
-   logic [7:0] 	 dramB_write_req_apply_V_num_din;
-   logic 	 dramB_write_req_apply_V_num_full_n;
-   logic 	 dramB_write_req_apply_V_num_write;
+   logic [7:0]   dramB_write_req_apply_V_num_din;
+   logic         dramB_write_req_apply_V_num_full_n;
+   logic         dramB_write_req_apply_V_num_write;
    logic [63:0]  dramB_write_req_apply_V_addr_din;
-   logic 	 dramB_write_req_apply_V_addr_full_n;
-   logic 	 dramB_write_req_apply_V_addr_write;
+   logic         dramB_write_req_apply_V_addr_full_n;
+   logic         dramB_write_req_apply_V_addr_write;
    
-   logic [7:0] 	 dramD_read_req_V_num_din;
-   logic 	 dramD_read_req_V_num_full_n;
-   logic 	 dramD_read_req_V_num_write;
+   logic [7:0]   dramD_read_req_V_num_din;
+   logic         dramD_read_req_V_num_full_n;
+   logic         dramD_read_req_V_num_write;
    logic [63:0]  dramD_read_req_V_addr_din;
-   logic 	 dramD_read_req_V_addr_full_n;
-   logic 	 dramD_read_req_V_addr_write;
+   logic         dramD_read_req_V_addr_full_n;
+   logic         dramD_read_req_V_addr_write;
 
-   logic 	 dramD_read_resp_V_last_dout;
-   logic 	 dramD_read_resp_V_last_empty_n;
-   logic 	 dramD_read_resp_V_last_read;
+   logic         dramD_read_resp_V_last_dout;
+   logic         dramD_read_resp_V_last_empty_n;
+   logic         dramD_read_resp_V_last_read;
    logic [511:0] dramD_read_resp_V_data_V_dout;
-   logic 	 dramD_read_resp_V_data_V_empty_n;
-   logic 	 dramD_read_resp_V_data_V_read;
+   logic         dramD_read_resp_V_data_V_empty_n;
+   logic         dramD_read_resp_V_data_V_read;
 
-   logic 	 dramD_write_req_data_V_last_din;
-   logic 	 dramD_write_req_data_V_last_full_n;
-   logic 	 dramD_write_req_data_V_last_write;
+   logic         dramD_write_req_data_V_last_din;
+   logic         dramD_write_req_data_V_last_full_n;
+   logic         dramD_write_req_data_V_last_write;
    logic [511:0] dramD_write_req_data_V_data_V_din;
-   logic 	 dramD_write_req_data_V_data_V_full_n;
-   logic 	 dramD_write_req_data_V_data_V_write;
+   logic         dramD_write_req_data_V_data_V_full_n;
+   logic         dramD_write_req_data_V_data_V_write;
 
-   logic [7:0] 	 dramD_write_req_apply_V_num_din;
-   logic 	 dramD_write_req_apply_V_num_full_n;
-   logic 	 dramD_write_req_apply_V_num_write;
+   logic [7:0]   dramD_write_req_apply_V_num_din;
+   logic         dramD_write_req_apply_V_num_full_n;
+   logic         dramD_write_req_apply_V_num_write;
    logic [63:0]  dramD_write_req_apply_V_addr_din;
-   logic 	 dramD_write_req_apply_V_addr_full_n;
-   logic 	 dramD_write_req_apply_V_addr_write;
+   logic         dramD_write_req_apply_V_addr_full_n;
+   logic         dramD_write_req_apply_V_addr_write;
 
    // write control channel
    assign cl_sh_ddr_awid_abd_q[2] = 0;
    assign cl_sh_ddr_awid_abd_q[1] = 0;
    assign cl_sh_ddr_awid_abd_q[0] = 0;
-	
+   
    assign cl_sh_ddr_awsize_abd_q[2] = 3'b110;
    assign cl_sh_ddr_awsize_abd_q[1] = 3'b110;
    assign cl_sh_ddr_awsize_abd_q[0] = 3'b110;
@@ -539,11 +538,11 @@ module cl_main
    assign cl_sh_ddr_awvalid_abd_q[2] = dramA_write_req_apply_V_addr_write;
    assign cl_sh_ddr_awvalid_abd_q[1] = dramB_write_req_apply_V_addr_write;
    assign cl_sh_ddr_awvalid_abd_q[0] = dramD_write_req_apply_V_addr_write;
-	
+   
    assign dramA_write_req_apply_V_addr_full_n = sh_cl_ddr_awready_abd_q[2];
    assign dramB_write_req_apply_V_addr_full_n = sh_cl_ddr_awready_abd_q[1];
    assign dramD_write_req_apply_V_addr_full_n = sh_cl_ddr_awready_abd_q[0];
-  
+   
    assign dramA_write_req_apply_V_num_full_n = sh_cl_ddr_awready_abd_q[2];
    assign dramB_write_req_apply_V_num_full_n = sh_cl_ddr_awready_abd_q[1];
    assign dramD_write_req_apply_V_num_full_n = sh_cl_ddr_awready_abd_q[0];
@@ -564,7 +563,7 @@ module cl_main
    assign cl_sh_ddr_wlast_abd_q[2] = dramA_write_req_data_V_last_din;
    assign cl_sh_ddr_wlast_abd_q[1] = dramB_write_req_data_V_last_din;
    assign cl_sh_ddr_wlast_abd_q[0] = dramD_write_req_data_V_last_din;
-	
+   
    assign cl_sh_ddr_wvalid_abd_q[2] = dramA_write_req_data_V_data_V_write;
    assign cl_sh_ddr_wvalid_abd_q[1] = dramB_write_req_data_V_data_V_write;
    assign cl_sh_ddr_wvalid_abd_q[0] = dramD_write_req_data_V_data_V_write;
@@ -827,54 +826,54 @@ module cl_main
    //-------------------------------------------------
    
    logic  [7:0]     dramC_read_req_V_num_din;
-   logic 	    dramC_read_req_V_num_full_n;
-   logic 	    dramC_read_req_V_num_write;
+   logic            dramC_read_req_V_num_full_n;
+   logic            dramC_read_req_V_num_write;
    logic [63:0]     dramC_read_req_V_addr_din;
-   logic 	    dramC_read_req_V_addr_full_n;
-   logic 	    dramC_read_req_V_addr_write;
+   logic            dramC_read_req_V_addr_full_n;
+   logic            dramC_read_req_V_addr_write;
    
-   logic 	    dramC_read_resp_V_last_dout;
-   logic 	    dramC_read_resp_V_last_empty_n;
+   logic            dramC_read_resp_V_last_dout;
+   logic            dramC_read_resp_V_last_empty_n;
    logic    	    dramC_read_resp_V_last_read;
    logic [511:0]    dramC_read_resp_V_data_V_dout;
-   logic 	    dramC_read_resp_V_data_V_empty_n;
-   logic 	    dramC_read_resp_V_data_V_read;
+   logic            dramC_read_resp_V_data_V_empty_n;
+   logic            dramC_read_resp_V_data_V_read;
    
-   logic 	    dramC_write_req_data_V_last_din;
-   logic 	    dramC_write_req_data_V_last_full_n;
-   logic 	    dramC_write_req_data_V_last_write;
+   logic            dramC_write_req_data_V_last_din;
+   logic            dramC_write_req_data_V_last_full_n;
+   logic            dramC_write_req_data_V_last_write;
    logic [511:0]    dramC_write_req_data_V_data_V_din;
-   logic 	    dramC_write_req_data_V_data_V_full_n;
-   logic 	    dramC_write_req_data_V_data_V_write;
+   logic            dramC_write_req_data_V_data_V_full_n;
+   logic            dramC_write_req_data_V_data_V_write;
    
-   logic [7:0] 	    dramC_write_req_apply_V_num_din;
-   logic 	    dramC_write_req_apply_V_num_full_n;
-   logic 	    dramC_write_req_apply_V_num_write;
+   logic [7:0]      dramC_write_req_apply_V_num_din;
+   logic            dramC_write_req_apply_V_num_full_n;
+   logic            dramC_write_req_apply_V_num_write;
    logic [63:0]     dramC_write_req_apply_V_addr_din;
-   logic 	    dramC_write_req_apply_V_addr_full_n;
-   logic 	    dramC_write_req_apply_V_addr_write;
+   logic            dramC_write_req_apply_V_addr_full_n;
+   logic            dramC_write_req_apply_V_addr_write;
    
    // read control channel
-   logic [7:0] 	    cl_sh_ddr_arlen_q;
+   logic [7:0]      cl_sh_ddr_arlen_q;
    logic            sh_cl_ddr_arready_q;
    logic            cl_sh_ddr_arvalid_q;
    logic [63:0]     cl_sh_ddr_araddr_q;
-   logic [2:0] 	    cl_sh_ddr_arsize_q;
+   logic [2:0]      cl_sh_ddr_arsize_q;
    logic [15:0]     cl_sh_ddr_arid_q;
 
    logic            cl_sh_ddr_rlast_q;
    logic            sh_cl_ddr_rvalid_q;
    logic            cl_sh_ddr_rready_q;
    logic [511:0]    sh_cl_ddr_rdata_q;
-   logic [1:0] 	    sh_cl_ddr_rresp_q;
+   logic [1:0]      sh_cl_ddr_rresp_q;
    logic [15:0]     sh_cl_ddr_rid_q;
 
-   logic [7:0] 	    cl_sh_ddr_awlen_q;
+   logic [7:0]      cl_sh_ddr_awlen_q;
    logic            sh_cl_ddr_awready_q;
    logic [63:0]     cl_sh_ddr_awaddr_q;
    logic            cl_sh_ddr_awvalid_q;
    logic [15:0]     cl_sh_ddr_awid_q; 
-   logic [2:0] 	    cl_sh_ddr_awsize_q;
+   logic [2:0]      cl_sh_ddr_awsize_q;
 
    logic            cl_sh_ddr_wlast_q; 
    logic            sh_cl_ddr_wready_q;
@@ -884,7 +883,7 @@ module cl_main
    logic [15:0]     cl_sh_ddr_wid_q;
 
    logic            cl_sh_ddr_bready_q;
-   logic [1:0] 	    sh_cl_ddr_bresp_q;
+   logic [1:0]      sh_cl_ddr_bresp_q;
    logic [15:0]     sh_cl_ddr_bid_q;
    logic            sh_cl_ddr_bvalid_q;
 
@@ -998,39 +997,39 @@ module cl_main
 
    always_ff @(negedge rst_main_n_sync or posedge clk_main_a0)
      begin
-	if (!rst_main_n_sync)
-	  begin
-	     cnt <= 0;
-	     sh_ddr_stat_wr_q[2] <= 0;
-	     sh_ddr_stat_wr_q[1] <= 0;
-	     sh_ddr_stat_wr_q[0] <= 0;
-	  end
-	else begin
-	   if (cnt <= DDR_STAT_DELAY) 
-	     begin
-		cnt <= cnt + 1;
-	     end
-	   
-	   if (cnt == DDR_STAT_DELAY)
-	     begin
-		sh_ddr_stat_wr_q[2] <= 1;
-		sh_ddr_stat_wr_q[1] <= 1;
-		sh_ddr_stat_wr_q[0] <= 1;
-	     end
-	   else if (cnt == DDR_STAT_DELAY + 1)
-	     begin
-		sh_ddr_stat_wr_q[2] <= 0;
-		sh_ddr_stat_wr_q[1] <= 0;
-		sh_ddr_stat_wr_q[0] <= 0;
-	     end
-	end
+	    if (!rst_main_n_sync)
+	      begin
+	         cnt <= 0;
+	         sh_ddr_stat_wr_q[2] <= 0;
+	         sh_ddr_stat_wr_q[1] <= 0;
+	         sh_ddr_stat_wr_q[0] <= 0;
+	      end
+	    else begin
+	       if (cnt <= DDR_STAT_DELAY) 
+	         begin
+		        cnt <= cnt + 1;
+	         end
+	       
+	       if (cnt == DDR_STAT_DELAY)
+	         begin
+		        sh_ddr_stat_wr_q[2] <= 1;
+		        sh_ddr_stat_wr_q[1] <= 1;
+		        sh_ddr_stat_wr_q[0] <= 1;
+	         end
+	       else if (cnt == DDR_STAT_DELAY + 1)
+	         begin
+		        sh_ddr_stat_wr_q[2] <= 0;
+		        sh_ddr_stat_wr_q[1] <= 0;
+		        sh_ddr_stat_wr_q[0] <= 0;
+	         end
+	    end
      end
 
    sh_ddr #(
             .DDR_A_PRESENT(DDR_A_PRESENT),
             .DDR_B_PRESENT(DDR_B_PRESENT),
             .DDR_D_PRESENT(DDR_D_PRESENT)
-	    ) SH_DDR
+	        ) SH_DDR
      (
       .clk(clk_main_a0),
       .rst_n(rst_main_n_sync),
@@ -1158,9 +1157,9 @@ module cl_main
    logic [7:0] sh_ddr_stat_addr_q[2:0];
    logic [2:0] sh_ddr_stat_rd_q; 
    logic [31:0] sh_ddr_stat_wdata_q[2:0];
-   logic [2:0] 	ddr_sh_stat_ack_q;
+   logic [2:0]  ddr_sh_stat_ack_q;
    logic [31:0] ddr_sh_stat_rdata_q[2:0];
-   logic [7:0] 	ddr_sh_stat_int_q[2:0];
+   logic [7:0]  ddr_sh_stat_int_q[2:0];
    
    lib_pipe #(
               .WIDTH(1+8+32), 
