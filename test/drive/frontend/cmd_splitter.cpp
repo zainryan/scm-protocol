@@ -55,19 +55,10 @@ TEST(test_cmd_splitter, correct_split) {
 
   // read command from the command queue
   drain_queue(&command_queue, &real);
-  //int read_times = 0;
-  //while (real.size() != expected.size() && read_times < DRAIN_QUEUE_READ_TIMES) {
-    //Command command;
-    //if (command_queue.read_nb(command)) {
-      //real.push_back(command); 
-    //}
-    //read_times++;
-  //}
 
   ASSERT_EQ(real.size(), expected.size());
 
   for (int i = 0; i < real.size(); i++) {
     command_eq(expected[NUM_OF_COMMAND - i - 1], real[i]);
   }
-
 }
