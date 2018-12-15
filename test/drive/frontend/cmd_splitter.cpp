@@ -1,13 +1,12 @@
-#include <thread>
+#include <cstdlib>
 #include <vector>
 
 #include "cmd.h"
 #include "cmd_splitter.hpp"
 #include "gtest/gtest.h"
-#include "stdlib.h"
 #include "staccel_type.h"
-#include "test_utils.hpp"
 #include "test_params.hpp"
+#include "test_utils.hpp"
 
 inline void command_eq(const Command &expected, const Command &real) {
   ASSERT_EQ(expected.index, real.index);
