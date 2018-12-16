@@ -2,8 +2,7 @@
 
 #include <ap_int.h>
 
-#define THROTTLE_RATIO (4)
-#define LOG2_THROTTLE_RATIO (2)
+#define DEFAULT_THROTTLE_RATIO (4)
 
 struct Chip_Read_Req {
   unsigned long long addr;

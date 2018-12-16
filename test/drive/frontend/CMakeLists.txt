@@ -2,6 +2,7 @@ add_executable(
     frontend_unit_tests
     cmd_splitter.cpp
     pcis_handler.cpp
+    poke_handler.cpp
     )
 
 target_link_libraries(
@@ -9,6 +10,7 @@ target_link_libraries(
     gtest_main
     cmd_splitter
     pcis_handler
+    poke_handler
     )
 
 add_test(
