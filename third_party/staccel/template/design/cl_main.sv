@@ -97,17 +97,17 @@ module cl_main
    logic         cl_sh_dma_pcis_rvalid_q;
    logic         sh_cl_dma_pcis_rready_q;
 
-   logic [511:0] pcis_write_req_V_data_dout;
-   logic         pcis_write_req_V_data_empty_n;
-   logic         pcis_write_req_V_data_read;
+   logic [511:0] pcis_write_req_V_data_V_dout;
+   logic         pcis_write_req_V_data_V_empty_n;
+   logic         pcis_write_req_V_data_V_read;
 
    logic [63:0]  pcis_write_req_V_addr_dout;
    logic         pcis_write_req_V_addr_empty_n;
    logic         pcis_write_req_V_addr_read;
 
-   assign pcis_write_req_V_data_dout = sh_cl_dma_pcis_wdata_q;
-   assign pcis_write_req_V_data_empty_n = sh_cl_dma_pcis_wvalid_q;
-   assign cl_sh_dma_pcis_wready_q = pcis_write_req_V_data_read;
+   assign pcis_write_req_V_data_V_dout = sh_cl_dma_pcis_wdata_q;
+   assign pcis_write_req_V_data_V_empty_n = sh_cl_dma_pcis_wvalid_q;
+   assign cl_sh_dma_pcis_wready_q = pcis_write_req_V_data_V_read;
 
    assign pcis_write_req_V_addr_dout = sh_cl_dma_pcis_awaddr_q;
    assign pcis_write_req_V_addr_empty_n = sh_cl_dma_pcis_awvalid_q;
@@ -1529,9 +1529,9 @@ module cl_main
       .dramD_write_req_apply_V_addr_full_n(dramD_write_req_apply_V_addr_full_n),
       .dramD_write_req_apply_V_addr_write(dramD_write_req_apply_V_addr_write),
 
-      .pcis_write_req_V_data_dout(pcis_write_req_V_data_dout),
-      .pcis_write_req_V_data_empty_n(pcis_write_req_V_data_empty_n),
-      .pcis_write_req_V_data_read(pcis_write_req_V_data_read),
+      .pcis_write_req_V_data_V_dout(pcis_write_req_V_data_V_dout),
+      .pcis_write_req_V_data_V_empty_n(pcis_write_req_V_data_V_empty_n),
+      .pcis_write_req_V_data_V_read(pcis_write_req_V_data_V_read),
       .pcis_write_req_V_addr_dout(pcis_write_req_V_addr_dout),
       .pcis_write_req_V_addr_empty_n(pcis_write_req_V_addr_empty_n),
       .pcis_write_req_V_addr_read(pcis_write_req_V_addr_read)
