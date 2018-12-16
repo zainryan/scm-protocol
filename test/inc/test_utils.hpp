@@ -1,5 +1,6 @@
 #pragma once
 
+#include "staccel_type.h"
 #include "test_params.hpp"
 
 #define RUN_METHOD(times, method) for(int i = 0; i < times; i++) method

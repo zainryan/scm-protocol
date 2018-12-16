@@ -1,5 +1,6 @@
 add_executable(
     backend_unit_tests
+    time_marker.cpp
     throttle_unit.cpp
     )
 
