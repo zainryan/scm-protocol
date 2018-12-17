@@ -52,12 +52,8 @@ void test_correct_throttle_chip_read_resp_and_chip_write_req(
 
   for (int i = 0; i < NUM_ENTRIES; i++) {
     int int_size_in_bit = sizeof(int) * 8;
-    for (int j = 0; j < PCIS_BUS_WIDTH; j += int_size_in_bit) {
-      resps[i].data(j + int_size_in_bit - 1, j) = rand();
-      reqs[i].data(j + int_size_in_bit - 1, j) = rand();
-    }
-    reqs[i].addr = 
-      (((unsigned long long) rand()) << 32) | rand();
+    resps[i] = RandomGen::rand_chip_read_resp();
+    reqs[i] = RandomGen::rand_chip_write_req();
     context.chip_read_resp_queue_ptr->write(resps[i]);
     context.chip_write_req_queue_ptr->write(reqs[i]);
   }
@@ -86,8 +82,7 @@ TEST(throttle_unit_impl, correct_bypass_chip_read_req) {
   ThrottleUnitTestContext context;
   Chip_Read_Req reqs[NUM_REQS];
   for (int i = 0; i < NUM_REQS; i++) {
-    reqs[i].addr = 
-      (((unsigned long long) rand()) << 32) | rand();
+    reqs[i] = RandomGen::rand_chip_read_req();
     context.chip_read_req_queue_ptr->write(reqs[i]);
   }
   context.throttle_ratio_queue_ptr->write(DEFAULT_THROTTLE_RATIO);

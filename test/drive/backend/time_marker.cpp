@@ -33,41 +33,6 @@ struct TimeMarkerContext {
   }
 };
 
-inline unsigned long long rand_u_long_long() {
-  unsigned long long ret;
-  ret = rand();
-  ret <<= 32;
-  ret |= rand();
-  return ret;
-}
-
-inline ap_uint<512> rand_ap_uint_512() {
-  ap_uint<512> data;
-  for (int i = 0; i < 512; i += 32) {
-    data(i + 31, i) = rand();
-  }
-  return data;
-}
-
-inline Chip_Read_Req rand_chip_read_req() {
-  Chip_Read_Req req;
-  req.addr = rand_u_long_long();
-  return req;
-}
-
-inline Chip_Read_Resp rand_chip_read_resp() {
-  Chip_Read_Resp resp;
-  resp.data = rand_ap_uint_512();
-  return resp;
-}
-
-inline Chip_Write_Req rand_chip_write_req() {
-  Chip_Write_Req req;
-  req.addr = rand_u_long_long();
-  req.data = rand_ap_uint_512();
-  return req;
-}
-
 TEST(time_marker_impl, correct) {
   TimeMarkerContext context;
   Chip_Read_Req expected_chip_read_reqs[4];
@@ -75,9 +40,9 @@ TEST(time_marker_impl, correct) {
   Chip_Write_Req expected_chip_write_reqs[4];
 
   for (int i = 0; i < 4; i++) {
-    expected_chip_read_reqs[i] = rand_chip_read_req();
-    expected_chip_read_resps[i] = rand_chip_read_resp();
-    expected_chip_write_reqs[i] = rand_chip_write_req();
+    expected_chip_read_reqs[i] = RandomGen::rand_chip_read_req();
+    expected_chip_read_resps[i] = RandomGen::rand_chip_read_resp();
+    expected_chip_write_reqs[i] = RandomGen::rand_chip_write_req();
     context.chip_read_req_queue->write(expected_chip_read_reqs[i]);
     context.chip_read_resp_queue->write(expected_chip_read_resps[i]);
     context.chip_write_req_queue->write(expected_chip_write_reqs[i]);
@@ -109,9 +74,9 @@ TEST(time_marker_impl, correct) {
   RUN_METHOD(10, INVOKE_TIME_MARKER_IMPL(context));
 
   for (int i = 0; i < 4; i++) {
-    expected_chip_read_reqs[i] = rand_chip_read_req();
-    expected_chip_read_resps[i] = rand_chip_read_resp();
-    expected_chip_write_reqs[i] = rand_chip_write_req();
+    expected_chip_read_reqs[i] = RandomGen::rand_chip_read_req();
+    expected_chip_read_resps[i] = RandomGen::rand_chip_read_resp();
+    expected_chip_write_reqs[i] = RandomGen::rand_chip_write_req();
     context.chip_read_req_queue->write(expected_chip_read_reqs[i]);
     context.chip_read_resp_queue->write(expected_chip_read_resps[i]);
     context.chip_write_req_queue->write(expected_chip_write_reqs[i]);

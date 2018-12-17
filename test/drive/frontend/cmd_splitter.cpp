@@ -23,14 +23,7 @@ TEST(test_cmd_splitter, correct_split) {
   Command command;
 
   for (int i = 0; i < NUM_OF_COMMAND; i++) {
-    int upper_half_command_index = rand();
-    int lower_half_command_index = rand();
-    int command_num = rand();
-    bool command_is_read = (bool) (rand() % 2);
-    command.index = 
-      ap_uint<COMMAND_INDEX_SIZE_IN_BIT> (((long long) upper_half_command_index) << 32 | lower_half_command_index);
-    command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>) command_num; 
-    command.is_read = command_is_read; 
+    command = RandomGen::rand_command();
     expected.push_back(command);
 
     long long command_content = 0;
