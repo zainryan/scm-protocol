@@ -15,7 +15,7 @@ if [[ "${TEST_CLANG_FORMAT}" == "yes" ]]; then
         exit 1
     fi
 
-    FILES=`git ls-files src test | grep -E "\.(cpp|h|hpp|c)$"`
+    FILES=`git ls-files inc src test | grep -E "\.(cpp|h|hpp|c)$"`
 
     for FILE in $FILES; do
         echo "Processing: $FILE"
