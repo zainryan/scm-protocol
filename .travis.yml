@@ -31,13 +31,12 @@ before_install:
   - export CC=clang-7 && export CXX=clang++-7 && alias clang-format=clang-format-7
 
 script:
-  - CC
   - cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug
   - cd build
   - cmake --build .
-  - bash travis_clang_format.sh
+  - ci/travis_clang_format.sh
   - ctest -V
 
 after_success:
   - coveralls --root .. -E ".*CMakeFiles.*" -E ".*test/.*" -E "build/.*"
-    --exclude third_party
+    --exclude third_party --exclude ci
