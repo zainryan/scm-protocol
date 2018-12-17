@@ -22,6 +22,10 @@ void drain_queue(ST_Queue<T> *queue, std::vector<T> *vec) {
 }
 
 namespace RandomGen {
+  inline unsigned int rand_u_int() {
+    return rand();
+  }
+
   inline unsigned long long rand_u_long_long() {
     unsigned long long ret;
     ret = rand();
