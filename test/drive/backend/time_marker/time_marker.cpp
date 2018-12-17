@@ -65,10 +65,10 @@ TEST(time_marker_impl, correct) {
     EXPECT_EQ(real_chip_read_req_with_times[i].timestamp, i);
     EXPECT_EQ(real_chip_read_resp_with_times[i].timestamp, i);
     EXPECT_EQ(real_chip_write_req_with_times[i].timestamp, i);
-    EXPECT_EQ(real_chip_read_req_with_times[i].raw.addr, expected_chip_read_reqs[i].addr);
-    EXPECT_EQ(real_chip_read_resp_with_times[i].raw.data, expected_chip_read_resps[i].data);
-    EXPECT_EQ(real_chip_write_req_with_times[i].raw.addr, expected_chip_write_reqs[i].addr);
-    EXPECT_EQ(real_chip_write_req_with_times[i].raw.data, expected_chip_write_reqs[i].data);
+    EXPECT_EQ(real_chip_read_req_with_times[i].raw, expected_chip_read_reqs[i]);
+    EXPECT_EQ(real_chip_read_resp_with_times[i].raw, expected_chip_read_resps[i]);
+    EXPECT_EQ(real_chip_write_req_with_times[i].raw, expected_chip_write_reqs[i]);
+    EXPECT_EQ(real_chip_write_req_with_times[i].raw, expected_chip_write_reqs[i]);
   }
 
   RUN_METHOD(10, INVOKE_TIME_MARKER_IMPL(context));
@@ -95,9 +95,9 @@ TEST(time_marker_impl, correct) {
     EXPECT_EQ(real_chip_read_req_with_times[i].timestamp, 14 + i);
     EXPECT_EQ(real_chip_read_resp_with_times[i].timestamp, 14 + i);
     EXPECT_EQ(real_chip_write_req_with_times[i].timestamp, 14 + i);
-    EXPECT_EQ(real_chip_read_req_with_times[i].raw.addr, expected_chip_read_reqs[i].addr);
-    EXPECT_EQ(real_chip_read_resp_with_times[i].raw.data, expected_chip_read_resps[i].data);
-    EXPECT_EQ(real_chip_write_req_with_times[i].raw.addr, expected_chip_write_reqs[i].addr);
-    EXPECT_EQ(real_chip_write_req_with_times[i].raw.data, expected_chip_write_reqs[i].data);
+    EXPECT_EQ(real_chip_read_req_with_times[i].raw, expected_chip_read_reqs[i]);
+    EXPECT_EQ(real_chip_read_resp_with_times[i].raw, expected_chip_read_resps[i]);
+    EXPECT_EQ(real_chip_write_req_with_times[i].raw, expected_chip_write_reqs[i]);
+    EXPECT_EQ(real_chip_write_req_with_times[i].raw, expected_chip_write_reqs[i]);
   }
 }

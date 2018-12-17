@@ -5,6 +5,7 @@
 #include "cmd_splitter.hpp"
 #include "staccel_type.h"
 #include "test_params.hpp"
+#include "time_marker.hpp"
 
 #define RUN_METHOD(times, method) for(int i = 0; i < times; i++) method
 
@@ -93,5 +94,40 @@ namespace RandomGen {
       pcis_write_req.data(i + int_size_in_bit - 1, i) = rand();
     }
   }
-    
+}
+
+bool operator == (const Command &a, const Command &b) {
+  return (a.index == b.index) && (a.num == b.num) && (a.is_read == b.is_read);
+}
+
+bool operator == (const Poke_Info &a, const Poke_Info &b) {
+  return (a.tag == b.tag) && (a.data == b.data);
+}
+
+bool operator == (const SuperCommand &a, const SuperCommand &b) {
+  return a.data == b.data;
+}
+
+bool operator == (const Chip_Read_Resp &a, const Chip_Read_Resp &b) {
+  return a.data == b.data;
+}
+
+bool operator == (const Chip_Read_Req &a, const Chip_Read_Req &b) {
+  return a.addr == b.addr;
+}
+
+bool operator == (const Chip_Write_Req &a, const Chip_Write_Req &b) {
+  return (a.addr == b.addr) && (a.data == b.data);
+}
+
+bool operator == (const Chip_Read_Req_With_Time &a, const Chip_Read_Req_With_Time &b) {
+  return (a.raw == b.raw) && (a.timestamp == b.timestamp);
+}
+
+bool operator == (const Chip_Read_Resp_With_Time &a, const Chip_Read_Resp_With_Time &b) {
+  return (a.raw == b.raw) && (a.timestamp == b.timestamp);
+}
+
+bool operator == (const Chip_Write_Req_With_Time &a, const Chip_Write_Req_With_Time &b) {
+  return (a.raw == b.raw) && (a.timestamp == b.timestamp);
 }
