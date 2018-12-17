@@ -17,9 +17,7 @@ addons:
       - libboost-system-dev
       - libboost-test-dev
       - libboost-thread-dev
-      - libc++-dev
-      - libc++abi-dev
-      - libclang-7-dev
+      - libstdc++-7-dev
 
 env:
   - TEST_CLANG_FORMAT="yes"
