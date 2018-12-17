@@ -1,2 +1,1 @@
-add_definitions(-DCOMPILE_UNIT_TESTS)
 add_subdirectory(drive)
