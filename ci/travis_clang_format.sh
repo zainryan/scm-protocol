@@ -3,6 +3,8 @@
 echo "Entering $(basename $0)"
 echo "TEST_CLANG_FORMAT=${TEST_CLANG_FORMAT}"
 
+cd $TRAVIS_BUILD_DIR
+
 if [[ "${TEST_CLANG_FORMAT}" == "yes" ]]; then
 
     RETURN=0
