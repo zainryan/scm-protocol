@@ -1,22 +1,50 @@
 sudo: false
 
+before_cache:
+  - rm -f $HOME/.cache/pip/log/debug.log
+
+cache:
+  ccache: true
+  directories:
+    - $HOME/.cache/pip
+
 language:
   - cpp
 
+compiler:
+  - clang
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-trusty-7
+    packages:
+      - clang-7
+      - llvm-7-dev
+      - libboost-system-dev
+      - libboost-test-dev
+      - libboost-thread-dev
+      - libstdc++-7-dev
+
+env:
+  - TEST_CLANG_FORMAT="yes"
+
 before_install:
   - pip install --user cpp-coveralls
-  - sudo apt-get install libboost-thread-dev libboost-system-dev libboost-test-dev
   - sudo sed -i "s/.*boost::has_trivial_destructor.*//g"
     /usr/include/boost/lockfree/queue.hpp
   - sudo sed -i "s/.*boost::has_trivial_assign.*//g"
     /usr/include/boost/lockfree/queue.hpp
+  - export CC=clang-7 && export CXX=clang++-7 && alias clang-format=clang-format-7
 
 script:
   - cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug
   - cd build
-  - cmake --build .
+  - cmake --build . -- -j$(nproc)
+  - $TRAVIS_BUILD_DIR/ci/travis_clang_format.sh
   - ctest -V
 
 after_success:
   - coveralls --root .. -E ".*CMakeFiles.*" -E ".*test/.*" -E "build/.*"
-    --exclude third_party
+    --exclude third_party --exclude ci
