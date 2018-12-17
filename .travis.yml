@@ -3,9 +3,24 @@ sudo: false
 language:
   - cpp
 
+compiler:
+  - clang
+
+addons:
+  apt:
+    sources:
+      - libboost-thread-dev
+      - libboost-system-dev
+      - libboost-test-dev
+    packages:
+      - clang-7
+      - llvm-7-dev
+
+env:
+  - TEST_CLANG_FORMAT="yes"
+
 before_install:
   - pip install --user cpp-coveralls
-  - sudo apt-get install libboost-thread-dev libboost-system-dev libboost-test-dev
   - sudo sed -i "s/.*boost::has_trivial_destructor.*//g"
     /usr/include/boost/lockfree/queue.hpp
   - sudo sed -i "s/.*boost::has_trivial_assign.*//g"
@@ -15,6 +30,7 @@ script:
   - cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug
   - cd build
   - cmake --build .
+  - ./travis_clang_format.sh
   - ctest -V
 
 after_success:
