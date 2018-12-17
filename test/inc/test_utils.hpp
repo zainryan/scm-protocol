@@ -97,6 +97,7 @@ namespace RandomGen {
     for (int i = 0; i < PCIS_BUS_WIDTH; i += int_size_in_bit) {
       pcis_write_req.data(i + int_size_in_bit - 1, i) = rand();
     }
+    return pcis_write_req;
   }
 }
 
