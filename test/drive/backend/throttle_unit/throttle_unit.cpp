@@ -92,7 +92,7 @@ TEST(throttle_unit_impl, correct_bypass_chip_read_req) {
               &real_throttled_chip_read_reqs);
   ASSERT_EQ(real_throttled_chip_read_reqs.size(), NUM_REQS);
   for (int i = 0; i < NUM_REQS; i++) {
-    EXPECT_EQ(real_throttled_chip_read_reqs[i].addr, reqs[i].addr);
+    EXPECT_EQ(real_throttled_chip_read_reqs[i], reqs[i]);
   }
 }
 
