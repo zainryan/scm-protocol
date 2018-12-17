@@ -35,7 +35,7 @@ script:
   - cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug
   - cd build
   - cmake --build .
-  - ./travis_clang_format.sh
+  - bash travis_clang_format.sh
   - ctest -V
 
 after_success:
