@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cmd.h"
 #include "staccel_type.h"
 
 #define COMMAND_INDEX_SIZE_IN_BIT 50
