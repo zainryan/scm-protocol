@@ -27,8 +27,10 @@ before_install:
     /usr/include/boost/lockfree/queue.hpp
   - sudo sed -i "s/.*boost::has_trivial_assign.*//g"
     /usr/include/boost/lockfree/queue.hpp
+  - export CC=clang-7 && export CXX=clang++-7 && alias clang-format=clang-format-7
 
 script:
+  - CC
   - cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug
   - cd build
   - cmake --build .
