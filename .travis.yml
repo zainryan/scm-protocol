@@ -41,7 +41,7 @@ before_install:
 script:
   - cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug
   - cd build
-  - cmake --build .
+  - cmake --build . -- -j$(nproc)
   - $TRAVIS_BUILD_DIR/ci/travis_clang_format.sh
   - ctest -V
 
