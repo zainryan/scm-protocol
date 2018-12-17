@@ -1,10 +1,5 @@
 sudo: false
 
-cache:
-  directories:
-    - $HOME/.cache/pip
-  ccache
-
 before_cache:
   - rm -f $HOME/.cache/pip/log/debug.log
 
