@@ -3,6 +3,11 @@ sudo: false
 before_cache:
   - rm -f $HOME/.cache/pip/log/debug.log
 
+cache:
+  ccache: true
+  directories:
+    - $HOME/.cache/pip
+
 language:
   - cpp
 
