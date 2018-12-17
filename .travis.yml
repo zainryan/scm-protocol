@@ -9,14 +9,14 @@ compiler:
 addons:
   apt:
     sources:
-      - libboost-thread-dev
-      - libboost-system-dev
-      - libboost-test-dev
       - ubuntu-toolchain-r-test
       - llvm-toolchain-trusty-7
     packages:
       - clang-7
       - llvm-7-dev
+      - libboost-system-dev
+      - libboost-test-dev
+      - libboost-thread-dev
 
 env:
   - TEST_CLANG_FORMAT="yes"
