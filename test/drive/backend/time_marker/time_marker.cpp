@@ -7,29 +7,35 @@
 #include "test_utils.hpp"
 #include "time_marker.hpp"
 
-#define INVOKE_TIME_MARKER_IMPL(context)                           \
-  time_marker_impl(context.chip_read_req_queue.get(),              \
-    context.chip_read_resp_queue.get(),                            \
-    context.chip_write_req_queue.get(),                            \
-    context.chip_read_req_with_time_queue.get(),                   \
-    context.chip_read_resp_with_time_queue.get(),                  \
-    context.chip_write_req_with_time_queue.get())
+#define INVOKE_TIME_MARKER_IMPL(context)                         \
+  time_marker_impl(context.chip_read_req_queue.get(),            \
+                   context.chip_read_resp_queue.get(),           \
+                   context.chip_write_req_queue.get(),           \
+                   context.chip_read_req_with_time_queue.get(),  \
+                   context.chip_read_resp_with_time_queue.get(), \
+                   context.chip_write_req_with_time_queue.get())
 
 struct TimeMarkerContext {
   std::unique_ptr<ST_Queue<Chip_Read_Req>> chip_read_req_queue;
   std::unique_ptr<ST_Queue<Chip_Read_Resp>> chip_read_resp_queue;
   std::unique_ptr<ST_Queue<Chip_Write_Req>> chip_write_req_queue;
-  std::unique_ptr<ST_Queue<Chip_Read_Req_With_Time>> chip_read_req_with_time_queue;
-  std::unique_ptr<ST_Queue<Chip_Read_Resp_With_Time>> chip_read_resp_with_time_queue;
-  std::unique_ptr<ST_Queue<Chip_Write_Req_With_Time>> chip_write_req_with_time_queue;
+  std::unique_ptr<ST_Queue<Chip_Read_Req_With_Time>>
+      chip_read_req_with_time_queue;
+  std::unique_ptr<ST_Queue<Chip_Read_Resp_With_Time>>
+      chip_read_resp_with_time_queue;
+  std::unique_ptr<ST_Queue<Chip_Write_Req_With_Time>>
+      chip_write_req_with_time_queue;
 
   TimeMarkerContext() {
     chip_read_req_queue.reset(new ST_Queue<Chip_Read_Req>(128));
     chip_read_resp_queue.reset(new ST_Queue<Chip_Read_Resp>(128));
     chip_write_req_queue.reset(new ST_Queue<Chip_Write_Req>(128));
-    chip_read_req_with_time_queue.reset(new ST_Queue<Chip_Read_Req_With_Time>(128));
-    chip_read_resp_with_time_queue.reset(new ST_Queue<Chip_Read_Resp_With_Time>(128));
-    chip_write_req_with_time_queue.reset(new ST_Queue<Chip_Write_Req_With_Time>(128));
+    chip_read_req_with_time_queue.reset(
+        new ST_Queue<Chip_Read_Req_With_Time>(128));
+    chip_read_resp_with_time_queue.reset(
+        new ST_Queue<Chip_Read_Resp_With_Time>(128));
+    chip_write_req_with_time_queue.reset(
+        new ST_Queue<Chip_Write_Req_With_Time>(128));
   }
 };
 
@@ -66,9 +72,12 @@ TEST(time_marker_impl, correct) {
     EXPECT_EQ(real_chip_read_resp_with_times[i].timestamp, i);
     EXPECT_EQ(real_chip_write_req_with_times[i].timestamp, i);
     EXPECT_EQ(real_chip_read_req_with_times[i].raw, expected_chip_read_reqs[i]);
-    EXPECT_EQ(real_chip_read_resp_with_times[i].raw, expected_chip_read_resps[i]);
-    EXPECT_EQ(real_chip_write_req_with_times[i].raw, expected_chip_write_reqs[i]);
-    EXPECT_EQ(real_chip_write_req_with_times[i].raw, expected_chip_write_reqs[i]);
+    EXPECT_EQ(real_chip_read_resp_with_times[i].raw,
+              expected_chip_read_resps[i]);
+    EXPECT_EQ(real_chip_write_req_with_times[i].raw,
+              expected_chip_write_reqs[i]);
+    EXPECT_EQ(real_chip_write_req_with_times[i].raw,
+              expected_chip_write_reqs[i]);
   }
 
   RUN_METHOD(10, INVOKE_TIME_MARKER_IMPL(context));
@@ -96,8 +105,11 @@ TEST(time_marker_impl, correct) {
     EXPECT_EQ(real_chip_read_resp_with_times[i].timestamp, 14 + i);
     EXPECT_EQ(real_chip_write_req_with_times[i].timestamp, 14 + i);
     EXPECT_EQ(real_chip_read_req_with_times[i].raw, expected_chip_read_reqs[i]);
-    EXPECT_EQ(real_chip_read_resp_with_times[i].raw, expected_chip_read_resps[i]);
-    EXPECT_EQ(real_chip_write_req_with_times[i].raw, expected_chip_write_reqs[i]);
-    EXPECT_EQ(real_chip_write_req_with_times[i].raw, expected_chip_write_reqs[i]);
+    EXPECT_EQ(real_chip_read_resp_with_times[i].raw,
+              expected_chip_read_resps[i]);
+    EXPECT_EQ(real_chip_write_req_with_times[i].raw,
+              expected_chip_write_reqs[i]);
+    EXPECT_EQ(real_chip_write_req_with_times[i].raw,
+              expected_chip_write_reqs[i]);
   }
 }

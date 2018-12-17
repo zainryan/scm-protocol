@@ -8,7 +8,7 @@ inline void poke_handler_impl(ST_Queue<Poke_Info> *poke_info_queue,
     if (poke_info.tag == THROTTLE_RATIO_TAG) {
       state = 1;
     }
-    
+
     if (state) {
       if (state == 1) {
         throttle_ratio_queue->write(poke_info.data);

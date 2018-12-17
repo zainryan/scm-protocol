@@ -27,11 +27,10 @@ TEST(poke_handler_impl, correct) {
   info_3.data = 4;
   poke_info_queue.write(info_3);
 
-  RUN_METHOD(4, poke_handler_impl(&poke_info_queue,
-                                  &throttle_ratio_queue));
+  RUN_METHOD(4, poke_handler_impl(&poke_info_queue, &throttle_ratio_queue));
   std::vector<unsigned int> real_throttle_ratios;
   drain_queue(&throttle_ratio_queue, &real_throttle_ratios);
-  
+
   ASSERT_EQ(real_throttle_ratios.size(), 3);
   EXPECT_EQ(real_throttle_ratios[0], info_0.data);
   EXPECT_EQ(real_throttle_ratios[1], info_1.data);

@@ -9,7 +9,6 @@
 #include "test_utils.hpp"
 
 TEST(test_cmd_splitter, correct_split) {
-
   std::vector<Command> expected;
   std::vector<Command> real;
 
@@ -27,15 +26,15 @@ TEST(test_cmd_splitter, correct_split) {
     command_content <<= COMMAND_ISREAD_SIZE_IN_BIT;
     command_content |= command.is_read;
 
-    super_command.data <<= COMMAND_SIZE_IN_BIT; 
-    super_command.data |= ((ap_uint<COMMAND_SIZE_IN_BIT>) command_content);
+    super_command.data <<= COMMAND_SIZE_IN_BIT;
+    super_command.data |= ((ap_uint<COMMAND_SIZE_IN_BIT>)command_content);
   }
 
   ST_Queue<SuperCommand> super_command_queue(8);
-  ST_Queue<Command> command_queue(32); 
+  ST_Queue<Command> command_queue(32);
 
   // put super-command to super command queue
-  ASSERT_EQ(super_command_queue.write_nb(super_command), true); 
+  ASSERT_EQ(super_command_queue.write_nb(super_command), true);
 
   RUN_METHOD(1, cmd_splitter_impl(&super_command_queue, &command_queue));
 
