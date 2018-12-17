@@ -18,12 +18,13 @@ struct Chip_Write_Req_With_Time {
   unsigned long long timestamp;
 };
 
-inline void time_marker_impl(ST_Queue<Chip_Read_Req> *chip_read_req_queue,
-                             ST_Queue<Chip_Read_Resp> *chip_read_resp_queue,
-                             ST_Queue<Chip_Write_Req> *chip_write_req_queue,
-                             ST_Queue<Chip_Read_Req_With_Time> *chip_read_req_with_time_queue,
-                             ST_Queue<Chip_Read_Resp_With_Time> *chip_read_resp_with_time_queue,
-                             ST_Queue<Chip_Write_Req_With_Time> *chip_write_req_with_time_queue) {
+inline void time_marker_impl(
+    ST_Queue<Chip_Read_Req> *chip_read_req_queue,
+    ST_Queue<Chip_Read_Resp> *chip_read_resp_queue,
+    ST_Queue<Chip_Write_Req> *chip_write_req_queue,
+    ST_Queue<Chip_Read_Req_With_Time> *chip_read_req_with_time_queue,
+    ST_Queue<Chip_Read_Resp_With_Time> *chip_read_resp_with_time_queue,
+    ST_Queue<Chip_Write_Req_With_Time> *chip_write_req_with_time_queue) {
   static unsigned long long timestamp = 0;
   static bool valid_chip_read_req = false;
   static bool valid_chip_read_resp = false;
@@ -39,7 +40,8 @@ inline void time_marker_impl(ST_Queue<Chip_Read_Req> *chip_read_req_queue,
   static unsigned long long data_timestamp_chip_write_req;
 
   if (valid_chip_read_req ||
-      (valid_chip_read_req = chip_read_req_queue->read_nb(data_chip_read_req))) {
+      (valid_chip_read_req =
+           chip_read_req_queue->read_nb(data_chip_read_req))) {
     if (!valid_timestamp_chip_read_req) {
       data_timestamp_chip_read_req = timestamp;
       valid_timestamp_chip_read_req = true;
@@ -53,7 +55,8 @@ inline void time_marker_impl(ST_Queue<Chip_Read_Req> *chip_read_req_queue,
   }
 
   if (valid_chip_read_resp ||
-      (valid_chip_read_resp = chip_read_resp_queue->read_nb(data_chip_read_resp))) {
+      (valid_chip_read_resp =
+           chip_read_resp_queue->read_nb(data_chip_read_resp))) {
     if (!valid_timestamp_chip_read_resp) {
       data_timestamp_chip_read_resp = timestamp;
       valid_timestamp_chip_read_resp = true;
@@ -67,7 +70,8 @@ inline void time_marker_impl(ST_Queue<Chip_Read_Req> *chip_read_req_queue,
   }
 
   if (valid_chip_write_req ||
-      (valid_chip_write_req = chip_write_req_queue->read_nb(data_chip_write_req))) {
+      (valid_chip_write_req =
+           chip_write_req_queue->read_nb(data_chip_write_req))) {
     if (!valid_timestamp_chip_write_req) {
       data_timestamp_chip_write_req = timestamp;
       valid_timestamp_chip_write_req = true;

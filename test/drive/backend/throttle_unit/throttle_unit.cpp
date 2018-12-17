@@ -8,14 +8,14 @@
 #include "test_utils.hpp"
 #include "throttle_unit.hpp"
 
-#define INVOKE_THROTTLE_UNIT_IMPL(context)                         \
-  throttle_unit_impl(context.throttle_ratio_queue_ptr.get(),       \
-    context.chip_read_req_queue_ptr.get(),                         \
-    context.chip_read_resp_queue_ptr.get(),                        \
-    context.chip_write_req_queue_ptr.get(),                        \
-    context.throttled_chip_read_req_queue_ptr.get(),               \
-    context.throttled_chip_read_resp_queue_ptr.get(),              \
-    context.throttled_chip_write_req_queue_ptr.get())
+#define INVOKE_THROTTLE_UNIT_IMPL(context)                             \
+  throttle_unit_impl(context.throttle_ratio_queue_ptr.get(),           \
+                     context.chip_read_req_queue_ptr.get(),            \
+                     context.chip_read_resp_queue_ptr.get(),           \
+                     context.chip_write_req_queue_ptr.get(),           \
+                     context.throttled_chip_read_req_queue_ptr.get(),  \
+                     context.throttled_chip_read_resp_queue_ptr.get(), \
+                     context.throttled_chip_write_req_queue_ptr.get())
 
 struct ThrottleUnitTestContext {
   std::unique_ptr<ST_Queue<unsigned int>> throttle_ratio_queue_ptr;
@@ -39,7 +39,6 @@ struct ThrottleUnitTestContext {
 
 void test_correct_throttle_chip_read_resp_and_chip_write_req(
     bool has_throttle_ratio, unsigned int throttle_ratio) {
-  
   const int NUM_ENTRIES = 128;
 
   if (!has_throttle_ratio) {
@@ -65,9 +64,9 @@ void test_correct_throttle_chip_read_resp_and_chip_write_req(
               &real_throttled_chip_read_resps);
   drain_queue(context.throttled_chip_write_req_queue_ptr.get(),
               &real_throttled_chip_write_reqs);
-  ASSERT_EQ(real_throttled_chip_read_resps.size(), 
+  ASSERT_EQ(real_throttled_chip_read_resps.size(),
             NUM_ENTRIES / throttle_ratio);
-  ASSERT_EQ(real_throttled_chip_write_reqs.size(), 
+  ASSERT_EQ(real_throttled_chip_write_reqs.size(),
             NUM_ENTRIES / throttle_ratio);
   for (int i = 0; i < NUM_ENTRIES / throttle_ratio; i++) {
     EXPECT_EQ(real_throttled_chip_read_resps[i], resps[i]);
@@ -88,7 +87,7 @@ TEST(throttle_unit_impl, correct_bypass_chip_read_req) {
   context.throttle_ratio_queue_ptr->write(DEFAULT_THROTTLE_RATIO);
   RUN_METHOD(NUM_REQS, INVOKE_THROTTLE_UNIT_IMPL(context));
   std::vector<Chip_Read_Req> real_throttled_chip_read_reqs;
-  drain_queue(context.throttled_chip_read_req_queue_ptr.get(), 
+  drain_queue(context.throttled_chip_read_req_queue_ptr.get(),
               &real_throttled_chip_read_reqs);
   ASSERT_EQ(real_throttled_chip_read_reqs.size(), NUM_REQS);
   for (int i = 0; i < NUM_REQS; i++) {
