@@ -35,11 +35,20 @@ inline unsigned long long rand_u_long_long() {
 
 inline Command rand_command() {
   Command command;
-  int command_num = rand();
   bool command_is_read = (bool)(rand() % 2);
   command.index = (ap_uint<COMMAND_INDEX_SIZE_IN_BIT>)rand_u_long_long();
-  command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>)command_num;
+  command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>)rand();
   command.is_read = command_is_read;
+  return command;
+}
+
+inline Command rand_command(unsigned char bankId, bool is_read) {
+  Command command;
+  command.index =
+      (ap_uint<COMMAND_INDEX_SIZE_IN_BIT>)((rand_u_long_long() << 2) |
+                                           bankId);  // TODO: small issue here
+  command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>)rand();
+  command.is_read = is_read;
   return command;
 }
 
