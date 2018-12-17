@@ -8,12 +8,6 @@
 #include "test_params.hpp"
 #include "test_utils.hpp"
 
-inline void command_eq(const Command &expected, const Command &real) {
-  ASSERT_EQ(expected.index, real.index);
-  ASSERT_EQ(expected.num, real.num);
-  ASSERT_EQ(expected.is_read, real.is_read);
-}
-
 TEST(test_cmd_splitter, correct_split) {
 
   std::vector<Command> expected;
@@ -51,6 +45,6 @@ TEST(test_cmd_splitter, correct_split) {
   ASSERT_EQ(real.size(), expected.size());
 
   for (int i = 0; i < real.size(); i++) {
-    command_eq(expected[NUM_OF_COMMAND - i - 1], real[i]);
+    EXPECT_EQ(expected[NUM_OF_COMMAND - i - 1], real[i]);
   }
 }

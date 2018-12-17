@@ -70,9 +70,9 @@ void test_correct_throttle_chip_read_resp_and_chip_write_req(
   ASSERT_EQ(real_throttled_chip_write_reqs.size(), 
             NUM_ENTRIES / throttle_ratio);
   for (int i = 0; i < NUM_ENTRIES / throttle_ratio; i++) {
-    EXPECT_EQ(real_throttled_chip_read_resps[i].data, resps[i].data);
-    EXPECT_EQ(real_throttled_chip_write_reqs[i].addr, reqs[i].addr);
-    EXPECT_EQ(real_throttled_chip_write_reqs[i].data, reqs[i].data);
+    EXPECT_EQ(real_throttled_chip_read_resps[i], resps[i]);
+    EXPECT_EQ(real_throttled_chip_write_reqs[i], reqs[i]);
+    EXPECT_EQ(real_throttled_chip_write_reqs[i], reqs[i]);
   }
 }
 
@@ -92,7 +92,7 @@ TEST(throttle_unit_impl, correct_bypass_chip_read_req) {
               &real_throttled_chip_read_reqs);
   ASSERT_EQ(real_throttled_chip_read_reqs.size(), NUM_REQS);
   for (int i = 0; i < NUM_REQS; i++) {
-    EXPECT_EQ(real_throttled_chip_read_reqs[i].addr, reqs[i].addr);
+    EXPECT_EQ(real_throttled_chip_read_reqs[i], reqs[i]);
   }
 }
 
