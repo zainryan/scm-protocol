@@ -11,19 +11,19 @@ TEST(poke_handler_impl, correct) {
   ST_Queue<unsigned int> throttle_ratio_queue(8);
 
   Poke_Info info_0;
-  info_0.tag = 0;
+  info_0.tag = Tag::THROTTLE_RATIO_TAG;
   info_0.data = 1;
   poke_info_queue.write(info_0);
   Poke_Info info_1;
-  info_1.tag = 0;
+  info_1.tag = Tag::THROTTLE_RATIO_TAG;
   info_1.data = 2;
   poke_info_queue.write(info_1);
   Poke_Info info_2;
-  info_2.tag = 4;
+  info_2.tag = Tag::NEXT_TAG_TO_USE;
   info_2.data = 3;
   poke_info_queue.write(info_2);
   Poke_Info info_3;
-  info_3.tag = 0;
+  info_3.tag = Tag::THROTTLE_RATIO_TAG;
   info_3.data = 4;
   poke_info_queue.write(info_3);
 
