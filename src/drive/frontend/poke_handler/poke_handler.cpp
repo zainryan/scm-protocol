@@ -5,7 +5,7 @@ inline void poke_handler_impl(ST_Queue<Poke_Info> *poke_info_queue,
   Poke_Info poke_info;
   if (poke_info_queue->read_nb(poke_info)) {
     unsigned short state = 0;
-    if (poke_info.tag == THROTTLE_RATIO_TAG) {
+    if (poke_info.tag == Tag::THROTTLE_RATIO_TAG) {
       state = 1;
     }
 
