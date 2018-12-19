@@ -7,15 +7,37 @@
 #include "test_utils.hpp"
 #include "time_marker.hpp"
 
-#define INVOKE_TIME_MARKER_IMPL(context)                         \
-  time_marker_impl(context.chip_read_req_queue.get(),            \
-                   context.chip_read_resp_queue.get(),           \
-                   context.chip_write_req_queue.get(),           \
-                   context.chip_read_req_with_time_queue.get(),  \
-                   context.chip_read_resp_with_time_queue.get(), \
-                   context.chip_write_req_with_time_queue.get())
+#define INVOKE_TIME_MARKER_IMPL(context)                                     \
+  time_marker_impl(                                                          \
+      &context.timestamp, &context.valid_chip_read_req,                      \
+      &context.valid_chip_read_resp, &context.valid_chip_write_req,          \
+      &context.data_chip_read_req, &context.data_chip_read_resp,             \
+      &context.data_chip_write_req, &context.valid_timestamp_chip_read_req,  \
+      &context.valid_timestamp_chip_read_resp,                               \
+      &context.valid_timestamp_chip_write_req,                               \
+      &context.data_timestamp_chip_read_req,                                 \
+      &context.data_timestamp_chip_read_resp,                                \
+      &context.data_timestamp_chip_write_req,                                \
+      context.chip_read_req_queue.get(), context.chip_read_resp_queue.get(), \
+      context.chip_write_req_queue.get(),                                    \
+      context.chip_read_req_with_time_queue.get(),                           \
+      context.chip_read_resp_with_time_queue.get(),                          \
+      context.chip_write_req_with_time_queue.get())
 
 struct TimeMarkerContext {
+  unsigned long long timestamp = 0;
+  bool valid_chip_read_req = false;
+  bool valid_chip_read_resp = false;
+  bool valid_chip_write_req = false;
+  Chip_Read_Req data_chip_read_req;
+  Chip_Read_Resp data_chip_read_resp;
+  Chip_Write_Req data_chip_write_req;
+  bool valid_timestamp_chip_read_req = false;
+  bool valid_timestamp_chip_read_resp = false;
+  bool valid_timestamp_chip_write_req = false;
+  unsigned long long data_timestamp_chip_read_req;
+  unsigned long long data_timestamp_chip_read_resp;
+  unsigned long long data_timestamp_chip_write_req;
   std::unique_ptr<ST_Queue<Chip_Read_Req>> chip_read_req_queue;
   std::unique_ptr<ST_Queue<Chip_Read_Resp>> chip_read_resp_queue;
   std::unique_ptr<ST_Queue<Chip_Write_Req>> chip_write_req_queue;
