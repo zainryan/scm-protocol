@@ -17,4 +17,3 @@ void pcis_handler(ST_Queue<PCIS_Write_Req> *pcis_write_req_queue,
     pcis_handler_impl(pcis_write_req_queue, super_command_queue);
   }
 }
-

@@ -1,4 +1,6 @@
 add_subdirectory(cmd_dispatcher)
 add_subdirectory(cmd_splitter)
 add_subdirectory(pcis_handler)
+add_subdirectory(param_replicator)
+add_subdirectory(peek_handler)
 add_subdirectory(poke_handler)
