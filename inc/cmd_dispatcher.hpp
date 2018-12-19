@@ -1,6 +1,7 @@
 #pragma once
 
 #include "chip.h"
+#include "cmd.h"
 #include "staccel_type.h"
 
 #define RD_REQ_BUF_DEPTH \
