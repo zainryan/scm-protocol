@@ -14,7 +14,7 @@
 #include <boost/lockfree/queue.hpp>
 template <typename T> class ST_Queue {
 private:
-  boost::lockfree::queue<T> queue;
+  boost::lockfree::queue<T, boost::lockfree::fixed_sized<true>> queue;
 
 public:
   ST_Queue(size_t depth) : queue(depth) {}
