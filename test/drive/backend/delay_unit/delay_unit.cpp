@@ -77,7 +77,8 @@ void gen_delay_unit_context(DelayUnitContext *context) {
 
 void test_delay_unit_impl(bool use_user_defined_delay_cycles,
                           unsigned int user_defined_delay_cycles) {
-  reset_delay_unit_impl = true;
+  // hetong07: solve compile error
+  bool reset_delay_unit_impl = true;
 
   DelayUnitContext context;
   gen_delay_unit_context(&context);
