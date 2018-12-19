@@ -8,16 +8,32 @@
 #include "test_utils.hpp"
 #include "throttle_unit.hpp"
 
-#define INVOKE_THROTTLE_UNIT_IMPL(context)                             \
-  throttle_unit_impl(context.throttle_ratio_queue_ptr.get(),           \
-                     context.chip_read_req_queue_ptr.get(),            \
-                     context.chip_read_resp_queue_ptr.get(),           \
-                     context.chip_write_req_queue_ptr.get(),           \
-                     context.throttled_chip_read_req_queue_ptr.get(),  \
-                     context.throttled_chip_read_resp_queue_ptr.get(), \
-                     context.throttled_chip_write_req_queue_ptr.get())
+#define INVOKE_THROTTLE_UNIT_IMPL(context)                                \
+  throttle_unit_impl(                                                     \
+      &context.valid_chip_read_req, &context.valid_chip_read_resp,        \
+      &context.valid_chip_write_req, &context.valid_throttle_ratio_queue, \
+      &context.data_chip_read_req, &context.data_chip_read_resp,          \
+      &context.data_chip_write_req, &context.throttle_ratio,              \
+      &context.state_chip_read_resp, &context.state_chip_write_req,       \
+      context.throttle_ratio_queue_ptr.get(),                             \
+      context.chip_read_req_queue_ptr.get(),                              \
+      context.chip_read_resp_queue_ptr.get(),                             \
+      context.chip_write_req_queue_ptr.get(),                             \
+      context.throttled_chip_read_req_queue_ptr.get(),                    \
+      context.throttled_chip_read_resp_queue_ptr.get(),                   \
+      context.throttled_chip_write_req_queue_ptr.get())
 
 struct ThrottleUnitTestContext {
+  bool valid_chip_read_req = false;
+  bool valid_chip_read_resp = false;
+  bool valid_chip_write_req = false;
+  bool valid_throttle_ratio_queue = false;
+  Chip_Read_Req data_chip_read_req;
+  Chip_Read_Resp data_chip_read_resp;
+  Chip_Write_Req data_chip_write_req;
+  unsigned int throttle_ratio = DEFAULT_THROTTLE_RATIO;
+  unsigned int state_chip_read_resp = 0;
+  unsigned int state_chip_write_req = 0;
   std::unique_ptr<ST_Queue<unsigned int>> throttle_ratio_queue_ptr;
   std::unique_ptr<ST_Queue<Chip_Read_Req>> chip_read_req_queue_ptr;
   std::unique_ptr<ST_Queue<Chip_Read_Resp>> chip_read_resp_queue_ptr;
@@ -37,8 +53,8 @@ struct ThrottleUnitTestContext {
   }
 };
 
-void test_correct_throttle_chip_read_resp_and_chip_write_req(
-    bool has_throttle_ratio, unsigned int throttle_ratio) {
+void test_throttle_read_resp_and_write_req(bool has_throttle_ratio,
+                                           unsigned int throttle_ratio) {
   const int NUM_ENTRIES = 128;
 
   if (!has_throttle_ratio) {
@@ -95,7 +111,11 @@ TEST(throttle_unit_impl, correct_bypass_chip_read_req) {
   }
 }
 
-TEST(throttle_unit_impl, correct_throttle_chip_read_resp_and_chip_write_req) {
-  test_correct_throttle_chip_read_resp_and_chip_write_req(0, 0);
-  test_correct_throttle_chip_read_resp_and_chip_write_req(1, 8);
+TEST(throttle_unit_impl, throttle_read_resp_and_write_req_with_default_ratio) {
+  test_throttle_read_resp_and_write_req(0, 0);
+}
+
+TEST(throttle_unit_impl,
+     throttle_read_resp_and_write_req_with_user_defined_ratio) {
+  test_throttle_read_resp_and_write_req(1, 8);
 }

@@ -8,7 +8,14 @@
 #include "test_utils.hpp"
 
 #define INVOKE_DELAY_UNIT_IMPL(context)                         \
-  delay_unit_impl(context.delay_cycles_queue.get(),             \
+  delay_unit_impl(&context.timestamp, &context.delay_cycles,    \
+                  &context.valid_chip_read_req_with_time,       \
+                  &context.valid_chip_read_resp_with_time,      \
+                  &context.valid_chip_write_req_with_time,      \
+                  &context.data_chip_read_req_with_time,        \
+                  &context.data_chip_read_resp_with_time,       \
+                  &context.data_chip_write_req_with_time,       \
+                  context.delay_cycles_queue.get(),             \
                   context.chip_read_req_with_time_queue.get(),  \
                   context.chip_read_resp_with_time_queue.get(), \
                   context.chip_write_req_with_time_queue.get(), \
@@ -17,6 +24,14 @@
                   context.delayed_chip_write_req_queue.get())
 
 struct DelayUnitContext {
+  unsigned long long timestamp = 0;
+  unsigned int delay_cycles = DEFAULT_DELAY_CYCLES;
+  bool valid_chip_read_req_with_time = false;
+  bool valid_chip_read_resp_with_time = false;
+  bool valid_chip_write_req_with_time = false;
+  Chip_Read_Req_With_Time data_chip_read_req_with_time;
+  Chip_Read_Resp_With_Time data_chip_read_resp_with_time;
+  Chip_Write_Req_With_Time data_chip_write_req_with_time;
   std::unique_ptr<ST_Queue<unsigned int>> delay_cycles_queue;
   std::unique_ptr<ST_Queue<Chip_Read_Req_With_Time>>
       chip_read_req_with_time_queue;
@@ -77,8 +92,6 @@ void gen_delay_unit_context(DelayUnitContext *context) {
 
 void test_delay_unit_impl(bool use_user_defined_delay_cycles,
                           unsigned int user_defined_delay_cycles) {
-  reset_delay_unit_impl = true;
-
   DelayUnitContext context;
   gen_delay_unit_context(&context);
   std::vector<Chip_Read_Req> result_chip_read_reqs;

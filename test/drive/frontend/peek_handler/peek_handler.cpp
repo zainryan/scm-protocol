@@ -7,12 +7,13 @@
 #include "test_params.hpp"
 #include "test_utils.hpp"
 
-#define INVOKE_PEEK_HANDLER_IMPL(context)                  \
-  peek_handler_impl(context.return_credit_num_queue.get(), \
-                    context.peek_req_queue.get(),          \
-                    context.peek_resp_queue.get())
+#define INVOKE_PEEK_HANDLER_IMPL(context)                               \
+  peek_handler_impl(                                                    \
+      &context.returned_credits, context.return_credit_num_queue.get(), \
+      context.peek_req_queue.get(), context.peek_resp_queue.get())
 
 struct PeekHandlerContext {
+  unsigned short returned_credits = 0;
   std::unique_ptr<ST_Queue<unsigned short>> return_credit_num_queue;
   std::unique_ptr<ST_Queue<unsigned int>> peek_req_queue;
   std::unique_ptr<ST_Queue<unsigned int>> peek_resp_queue;
