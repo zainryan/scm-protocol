@@ -33,23 +33,42 @@ inline unsigned long long rand_u_long_long() {
   return ret;
 }
 
+inline Command rand_command(unsigned char bank_id, bool is_read) {
+  Command command;
+  command.index =
+      (ap_uint<COMMAND_INDEX_SIZE_IN_BIT>)((rand_u_long_long() << 2) |
+                                           bank_id);  // TODO: small issue here
+  command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>)rand();
+  command.is_read = is_read;
+  return command;
+}
+
 inline Command rand_command() {
   Command command;
+  int command_num = rand();
   bool command_is_read = (bool)(rand() % 2);
   command.index = (ap_uint<COMMAND_INDEX_SIZE_IN_BIT>)rand_u_long_long();
-  command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>)rand();
+  command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>)command_num;
   command.is_read = command_is_read;
   return command;
 }
 
-inline Command rand_command(unsigned char bankId, bool is_read) {
-  Command command;
-  command.index =
-      (ap_uint<COMMAND_INDEX_SIZE_IN_BIT>)((rand_u_long_long() << 2) |
-                                           bankId);  // TODO: small issue here
-  command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>)rand();
-  command.is_read = is_read;
-  return command;
+inline SuperCommand rand_super_command() {
+  SuperCommand super_command;
+  for (int i = 0; i < NUM_OF_COMMAND; i++) {
+    Command command = rand_command();
+
+    long long command_content = 0;
+    command_content |= command.index;
+    command_content <<= COMMAND_NUM_SIZE_IN_BIT;
+    command_content |= command.num;
+    command_content <<= COMMAND_ISREAD_SIZE_IN_BIT;
+    command_content |= command.is_read;
+
+    super_command.data <<= COMMAND_SIZE_IN_BIT;
+    super_command.data |= ((ap_uint<COMMAND_SIZE_IN_BIT>)command_content);
+  }
+  return super_command;
 }
 
 inline SuperCommand rand_super_command() {
