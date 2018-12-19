@@ -1,15 +1,16 @@
 #include "param_replicator.hpp"
 
-inline void param_replicator_impl(ST_Queue<unsigned int> *throttle_ratio_queue,
-                           ST_Queue<unsigned int> *throttle_ratio_0_queue,
-                           ST_Queue<unsigned int> *throttle_ratio_1_queue,
-                           ST_Queue<unsigned int> *throttle_ratio_2_queue,
-                           ST_Queue<unsigned int> *throttle_ratio_3_queue,
-                           ST_Queue<unsigned int> *delay_cycles_queue,
-                           ST_Queue<unsigned int> *delay_cycles_0_queue,
-                           ST_Queue<unsigned int> *delay_cycles_1_queue,
-                           ST_Queue<unsigned int> *delay_cycles_2_queue,
-                           ST_Queue<unsigned int> *delay_cycles_3_queue) {
+inline void
+param_replicator_impl(ST_Queue<unsigned int> *throttle_ratio_queue,
+                      ST_Queue<unsigned int> *throttle_ratio_0_queue,
+                      ST_Queue<unsigned int> *throttle_ratio_1_queue,
+                      ST_Queue<unsigned int> *throttle_ratio_2_queue,
+                      ST_Queue<unsigned int> *throttle_ratio_3_queue,
+                      ST_Queue<unsigned int> *delay_cycles_queue,
+                      ST_Queue<unsigned int> *delay_cycles_0_queue,
+                      ST_Queue<unsigned int> *delay_cycles_1_queue,
+                      ST_Queue<unsigned int> *delay_cycles_2_queue,
+                      ST_Queue<unsigned int> *delay_cycles_3_queue) {
   unsigned int throttle_ratio;
   if (throttle_ratio_queue->read_nb(throttle_ratio)) {
     throttle_ratio_0_queue->write(throttle_ratio);
