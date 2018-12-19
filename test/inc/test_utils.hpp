@@ -71,24 +71,6 @@ inline SuperCommand rand_super_command() {
   return super_command;
 }
 
-inline SuperCommand rand_super_command() {
-  SuperCommand super_command;
-  for (int i = 0; i < NUM_OF_COMMAND; i++) {
-    Command command = rand_command();
-
-    long long command_content = 0;
-    command_content |= command.index;
-    command_content <<= COMMAND_NUM_SIZE_IN_BIT;
-    command_content |= command.num;
-    command_content <<= COMMAND_ISREAD_SIZE_IN_BIT;
-    command_content |= command.is_read;
-
-    super_command.data <<= COMMAND_SIZE_IN_BIT;
-    super_command.data |= ((ap_uint<COMMAND_SIZE_IN_BIT>)command_content);
-  }
-  return super_command;
-}
-
 inline ap_uint<512> rand_ap_uint_512() {
   ap_uint<512> data;
   for (int i = 0; i < 512; i += 32) {
