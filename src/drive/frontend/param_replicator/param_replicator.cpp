@@ -1,6 +1,6 @@
 #include "param_replicator.hpp"
 
-void param_replicator_impl(ST_Queue<unsigned int> *throttle_ratio_queue,
+inline void param_replicator_impl(ST_Queue<unsigned int> *throttle_ratio_queue,
                            ST_Queue<unsigned int> *throttle_ratio_0_queue,
                            ST_Queue<unsigned int> *throttle_ratio_1_queue,
                            ST_Queue<unsigned int> *throttle_ratio_2_queue,
