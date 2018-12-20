@@ -99,7 +99,6 @@ TEST(test_cmd_dispatcher, bank_0_dispatch) {
   }
 
   RUN_METHOD(TEST_NUM_OF_COMMANDS, INVOKE_CMD_DISPATCHER_IMPL(context));
-
   drain_queue(context.chip_read_req_queue_0.get(), &real);
   ASSERT_EQ(expected.size(), real.size());
 
