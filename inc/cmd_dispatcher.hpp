@@ -7,7 +7,7 @@
 #define RD_REQ_BUF_DEPTH \
   32  // this should be the same depth with the chip read req queue
 
-// TODO(@zainryan): design the data floorplan
+ // TODO(@zainryan): should be moved elsewhere.
 struct Host_Write_Data {
   unsigned long long addr;
   ap_uint<512> data;
