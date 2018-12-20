@@ -18,6 +18,8 @@ inline void delay_unit_impl(
     ST_Queue<Chip_Read_Req> *delayed_chip_read_req_queue,
     ST_Queue<Chip_Read_Resp> *delayed_chip_read_resp_queue,
     ST_Queue<Chip_Write_Req> *delayed_chip_write_req_queue) {
+#pragma HLS INLINE
+
   unsigned int tmp_delay_cycles;
   if (delay_cycles_queue->read_nb(tmp_delay_cycles)) {
     *delay_cycles = tmp_delay_cycles;
