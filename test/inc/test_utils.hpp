@@ -36,7 +36,8 @@ inline unsigned long long rand_u_long_long() {
 inline Command rand_command(unsigned char bank_id, bool is_read) {
   Command command;
   command.index =
-      (ap_uint<COMMAND_INDEX_SIZE_IN_BIT>)((rand_u_long_long() << 2) |
+      (ap_uint<COMMAND_INDEX_SIZE_IN_BIT>)((rand_u_long_long()
+                                            << LOG2_NUM_OF_CHIP_BANKS) |
                                            bank_id);  // TODO: small issue here
   command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>)rand();
   command.is_read = is_read;
