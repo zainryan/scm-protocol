@@ -88,12 +88,14 @@ TEST(test_cmd_dispatcher, bank_0_dispatch) {
   ASSERT_EQ(input_commands.size(), output_contexts.size());
 
   for (int i = 0; i < input_commands.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
-              output_reqs[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs[i].addr);
   }
   for (int i = 0; i < input_commands.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
-              output_contexts[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_contexts[i].addr);
   }
 }
 
@@ -120,12 +122,14 @@ TEST(test_cmd_dispatcher, bank_1_dispatch) {
   ASSERT_EQ(input_commands.size(), output_contexts.size());
 
   for (int i = 0; i < input_commands.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
-              output_reqs[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs[i].addr);
   }
   for (int i = 0; i < input_commands.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
-              output_reqs[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs[i].addr);
   }
 }
 
@@ -151,12 +155,14 @@ TEST(test_cmd_dispatcher, bank_2_dispatch) {
   ASSERT_EQ(input_commands.size(), output_contexts.size());
 
   for (int i = 0; i < input_commands.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
-              output_reqs[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs[i].addr);
   }
   for (int i = 0; i < input_commands.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
-              output_reqs[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs[i].addr);
   }
 }
 
@@ -182,12 +188,14 @@ TEST(test_cmd_dispatcher, bank_3_dispatch) {
   ASSERT_EQ(input_commands.size(), output_contexts.size());
 
   for (int i = 0; i < input_commands.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
-              output_reqs[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs[i].addr);
   }
   for (int i = 0; i < input_commands.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
-              output_reqs[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs[i].addr);
   }
 }
 
@@ -251,31 +259,39 @@ TEST(test_cmd_dispatcher, all_bank_dispatch_random) {
   ASSERT_EQ(input_commands_3.size(), output_contexts_3.size());
 
   for (int i = 0; i < input_commands_0.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands_0[i].index * 64,
-              output_reqs_0[i].addr);
-    EXPECT_EQ((unsigned long long)input_commands_0[i].index * 64,
-              output_contexts_0[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_0[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs_0[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_0[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_contexts_0[i].addr);
   }
 
   for (int i = 0; i < input_commands_1.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands_1[i].index * 64,
-              output_reqs_1[i].addr);
-    EXPECT_EQ((unsigned long long)input_commands_1[i].index * 64,
-              output_contexts_1[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_1[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs_1[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_1[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_contexts_1[i].addr);
   }
 
   for (int i = 0; i < input_commands_2.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands_2[i].index * 64,
-              output_reqs_2[i].addr);
-    EXPECT_EQ((unsigned long long)input_commands_2[i].index * 64,
-              output_contexts_2[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_2[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs_2[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_2[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_contexts_2[i].addr);
   }
 
   for (int i = 0; i < input_commands_3.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands_3[i].index * 64,
-              output_reqs_3[i].addr);
-    EXPECT_EQ((unsigned long long)input_commands_3[i].index * 64,
-              output_contexts_3[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_3[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs_3[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_3[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_contexts_3[i].addr);
   }
 }
 
@@ -340,30 +356,38 @@ TEST(test_cmd_dispatcher, all_bank_dispatch_interleave) {
   ASSERT_EQ(input_commands_3.size(), output_contexts_3.size());
 
   for (int i = 0; i < input_commands_0.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands_0[i].index * 64,
-              output_reqs_0[i].addr);
-    EXPECT_EQ((unsigned long long)input_commands_0[i].index * 64,
-              output_contexts_0[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_0[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs_0[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_0[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_contexts_0[i].addr);
   }
 
   for (int i = 0; i < input_commands_1.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands_1[i].index * 64,
-              output_reqs_1[i].addr);
-    EXPECT_EQ((unsigned long long)input_commands_1[i].index * 64,
-              output_contexts_1[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_1[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs_1[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_1[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_contexts_1[i].addr);
   }
 
   for (int i = 0; i < input_commands_2.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands_2[i].index * 64,
-              output_reqs_2[i].addr);
-    EXPECT_EQ((unsigned long long)input_commands_2[i].index * 64,
-              output_contexts_2[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_2[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs_2[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_2[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_contexts_2[i].addr);
   }
 
   for (int i = 0; i < input_commands_3.size(); i++) {
-    EXPECT_EQ((unsigned long long)input_commands_3[i].index * 64,
-              output_reqs_3[i].addr);
-    EXPECT_EQ((unsigned long long)input_commands_3[i].index * 64,
-              output_contexts_3[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_3[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_reqs_3[i].addr);
+    EXPECT_EQ(
+        (unsigned long long)input_commands_3[i].index * UNIT_CHUCK_SIZE_IN_BYTE,
+        output_contexts_3[i].addr);
   }
 }
