@@ -33,6 +33,8 @@ inline void time_marker_impl(
     ST_Queue<Chip_Read_Req_With_Time> *chip_read_req_with_time_queue,
     ST_Queue<Chip_Read_Resp_With_Time> *chip_read_resp_with_time_queue,
     ST_Queue<Chip_Write_Req_With_Time> *chip_write_req_with_time_queue) {
+#pragma HLS INLINE
+
   if (*valid_chip_read_req ||
       (*valid_chip_read_req =
            chip_read_req_queue->read_nb(*data_chip_read_req))) {

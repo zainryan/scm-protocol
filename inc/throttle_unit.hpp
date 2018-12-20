@@ -16,6 +16,8 @@ inline void throttle_unit_impl(
     ST_Queue<Chip_Read_Req> *throttled_chip_read_req_queue,
     ST_Queue<Chip_Read_Resp> *throttled_chip_read_resp_queue,
     ST_Queue<Chip_Write_Req> *throttled_chip_write_req_queue) {
+#pragma HLS INLINE
+
   unsigned int tmp_throttle_ratio;
   if (throttle_ratio_queue->read_nb(tmp_throttle_ratio)) {
     *throttle_ratio = tmp_throttle_ratio;
