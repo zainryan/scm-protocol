@@ -19,22 +19,28 @@ using namespace clang::tooling;
 
 static llvm::cl::OptionCategory
     STAccelCategory("ST-Accel s2s transformer for kernels");
+
 std::string topFuncName;
 bool catchTopFunc = false;
 
+std::set<std::string> rewritingFuncNames;
+std::map<std::string, std::string> rewritingNewTextMappings;
+
 class RewritingVisitor : public RecursiveASTVisitor<RewritingVisitor> {
 public:
-  RewritingVisitor(Rewriter &R, std::string &_tbaText)
-      : TheRewriter(R), tbaText(_tbaText) {}
+  RewritingVisitor(Rewriter &R)
+      : TheRewriter(R) {}
 
   bool VisitFunctionDecl(FunctionDecl *f) {
     if (f->hasBody()) {
-      if (f->getNameInfo().getAsString() == topFuncName) {
+      std::string funcName = f->getNameInfo().getAsString();
+      if (rewritingFuncNames.count(funcName)) {
         Stmt *funcBody = f->getBody();
         SourceLocation locStart = funcBody->getBeginLoc();
         SourceLocation locEnd = funcBody->getEndLoc();
         TheRewriter.RemoveText(SourceRange(locStart, locEnd));
-        TheRewriter.InsertText(locStart, "{\n" + tbaText + "}", true, true);
+        std::string newText = rewritingNewTextMappings[funcName];
+        TheRewriter.InsertText(locStart, "{\n" + newText + "}", true, true);
       }
     }
 
@@ -43,13 +49,11 @@ public:
 
 private:
   Rewriter &TheRewriter;
-  std::string &tbaText;
 };
 
 class InfoExtractionVisitor
     : public RecursiveASTVisitor<InfoExtractionVisitor> {
 public:
-  InfoExtractionVisitor(Rewriter &R) : TheRewriter(R) {}
 
   void updateFifoNameSet(FunctionDecl *f) {
     funcParamFifoNameSet.clear();
@@ -62,19 +66,16 @@ public:
     if (f->hasBody()) {
       if (f->getNameInfo().getAsString() == topFuncName) {
         catchTopFunc = true;
-        Stmt *body = f->getBody();
+        rewritingFuncNames.insert(topFuncName);
         updateFifoNameSet(f);
-        dfs(body);
+        Stmt *body = f->getBody();
+        dfs(body, topFuncName);
       }
     }
     return true;
   }
 
-  std::string &getText() { return text; }
-
 private:
-  Rewriter &TheRewriter;
-  std::string text;
   std::set<std::string> funcParamFifoNameSet;
 
   std::string toString(Stmt *stmt) {
@@ -91,7 +92,9 @@ private:
     return ros.str();
   }
 
-  void dfs(Stmt *root) {
+  void dfs(Stmt *root, std::string scopedFuncName) {
+    std::string &text = rewritingNewTextMappings[scopedFuncName];
+
     for (auto iter = root->child_begin(); iter != root->child_end(); iter++) {
       Stmt *curStmt = *iter;
 
@@ -122,8 +125,28 @@ private:
             std::string str = toString(cxxMemberCallExpr) + ";\n";
             text += str;
           }
+        } else if (!strcmp(curStmt->getStmtClassName(), "CallExpr")) {
+          CallExpr *callExpr = (CallExpr *)curStmt;
+          Expr **allArgs = callExpr->getArgs();
+          for (int i = 0; i < (int)(callExpr->getNumArgs()); i++) {
+            Expr *arg = allArgs[i];
+            auto argStr = toString(arg);
+            if (funcParamFifoNameSet.find(argStr) !=
+                funcParamFifoNameSet.end()) {
+              std::string str = toString(callExpr) + ";\n";
+              text += str;
+              const FunctionDecl *directCallee = callExpr->getDirectCallee();
+              if (directCallee) {
+                std::string directCalleeFuncName =
+                    directCallee->getNameInfo().getAsString();
+                rewritingFuncNames.insert(directCalleeFuncName);
+                dfs(directCallee->getBody(), directCalleeFuncName);
+              }
+              break;
+            }
+          }
         }
-        dfs(curStmt);
+        dfs(curStmt, scopedFuncName);
         if (!strcmp(curStmt->getStmtClassName(), "CompoundStmt")) {
           text += "}";
         } else if (!strcmp(curStmt->getStmtClassName(), "ForStmt")) {
@@ -134,17 +157,37 @@ private:
   }
 };
 
-class MyASTConsumer : public ASTConsumer {
+class InfoExtractionConsumer : public ASTConsumer {
 public:
-  MyASTConsumer(Rewriter &R) : TheRewriter(R) {}
-
   bool HandleTopLevelDecl(DeclGroupRef DR) override {
-    InfoExtractionVisitor infoExtractionVisitor(TheRewriter);
+    InfoExtractionVisitor infoExtractionVisitor;
     for (DeclGroupRef::iterator b = DR.begin(), e = DR.end(); b != e; ++b) {
       infoExtractionVisitor.TraverseDecl(*b);
     }
-    RewritingVisitor rewritingVisitor(TheRewriter,
-                                      infoExtractionVisitor.getText());
+    return true;
+  }
+};
+
+class InfoExtractionAction : public ASTFrontendAction {
+public:
+  InfoExtractionAction() {}
+
+  std::unique_ptr<ASTConsumer> CreateASTConsumer(CompilerInstance &CI,
+                                                 StringRef file) override {
+    TheRewriter.setSourceMgr(CI.getSourceManager(), CI.getLangOpts());
+    return llvm::make_unique<InfoExtractionConsumer>();
+  }
+
+private:
+  Rewriter TheRewriter;
+};
+
+class RewritingConsumer : public ASTConsumer {
+public:
+  RewritingConsumer(Rewriter &R) : TheRewriter(R) {}
+
+  bool HandleTopLevelDecl(DeclGroupRef DR) override {
+    RewritingVisitor rewritingVisitor(TheRewriter);
     for (DeclGroupRef::iterator b = DR.begin(), e = DR.end(); b != e; ++b) {
       rewritingVisitor.TraverseDecl(*b);
     }
@@ -155,9 +198,10 @@ private:
   Rewriter &TheRewriter;
 };
 
-class MyFrontendAction : public ASTFrontendAction {
+class RewritingAction : public ASTFrontendAction {
 public:
-  MyFrontendAction() {}
+  RewritingAction() {}
+
   void EndSourceFileAction() override {
     SourceManager &SM = TheRewriter.getSourceMgr();
     TheRewriter.getEditBuffer(SM.getMainFileID()).write(llvm::outs());
@@ -166,7 +210,7 @@ public:
   std::unique_ptr<ASTConsumer> CreateASTConsumer(CompilerInstance &CI,
                                                  StringRef file) override {
     TheRewriter.setSourceMgr(CI.getSourceManager(), CI.getLangOpts());
-    return llvm::make_unique<MyASTConsumer>(TheRewriter);
+    return llvm::make_unique<RewritingConsumer>(TheRewriter);
   }
 
 private:
@@ -183,11 +227,15 @@ int main(int argc, const char **argv) {
   topFuncName = getKernelName(std::string(argv[1]));
   CommonOptionsParser op(argc, argv, STAccelCategory);
   ClangTool Tool(op.getCompilations(), op.getSourcePathList());
-  int ret = Tool.run(newFrontendActionFactory<MyFrontendAction>().get());
+  int ret = Tool.run(newFrontendActionFactory<InfoExtractionAction>().get());
   if (!catchTopFunc) {
     llvm::errs() << "Error: In file " + std::string(argv[1]) +
                         ": Cannot find the top function!\n";
     return -1;
   }
+  if (ret) {
+    return ret;
+  }
+  ret = Tool.run(newFrontendActionFactory<RewritingAction>().get());
   return ret;
 }

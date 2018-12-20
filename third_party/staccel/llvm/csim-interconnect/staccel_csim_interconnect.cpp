@@ -48,12 +48,9 @@ public:
         SourceLocation locEnd = funcBody->getEndLoc();
         TheRewriter.InsertText(locEnd.getLocWithOffset(-1), tbaText, true,
                                true);
-        TheRewriter.InsertText(locEnd.getLocWithOffset(-1),
-                               "\nsimulator();while(1);", true, true);
-        TheRewriter.InsertText(locEnd.getLocWithOffset(1),
-                               "\n\nvoid user_simulation_function() {\n// PUT "
-                               "YOUR CODE HERE\n\nwhile(1);\n}",
-                               true, true);
+        TheRewriter.InsertText(
+            locEnd.getLocWithOffset(-1),
+            "\n// PUT YOUR SIMULATION LOGIC HERE.\n\nwhile(1);", true, true);
       }
     }
 
@@ -91,8 +88,7 @@ public:
               std::string funcName = toString(callExpr->getCallee());
               text += "(" + funcName;
               for (unsigned i = 0; i < callExpr->getNumArgs(); i++) {
-                std::string curArgText =
-                    "std::ref(" + toString(callExpr->getArg(i)) + ")";
+                std::string curArgText = toString(callExpr->getArg(i));
                 text += ", " + curArgText;
               }
               text += ");\n";
