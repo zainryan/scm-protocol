@@ -68,105 +68,144 @@ struct cmd_dispatcher_context {
 };
 
 TEST(test_cmd_dispatcher, bank_0_dispatch) {
-  std::vector<Command> expected;
-  std::vector<Chip_Read_Req> real;
+  std::vector<Command> input_commands;
+  std::vector<Chip_Read_Req> output_reqs;
+  std::vector<Chip_Read_Req> output_contexts;
+
   cmd_dispatcher_context context;
 
   // generate bank 0 command
   for (int i = 0; i < TEST_NUM_OF_COMMANDS; i++) {
     Command command = RandomGen::rand_command(0, true);
-    expected.push_back(command);
+    input_commands.push_back(command);
     context.command_queue->write(command);
   }
 
   RUN_METHOD(TEST_NUM_OF_COMMANDS, INVOKE_CMD_DISPATCHER_IMPL(context));
-  drain_queue(context.chip_read_req_queue_0.get(), &real);
-  ASSERT_EQ(expected.size(), real.size());
+  drain_queue(context.chip_read_req_queue_0.get(), &output_reqs);
+  drain_queue(context.chip_read_req_context_0.get(), &output_contexts);
+  ASSERT_EQ(input_commands.size(), output_reqs.size());
+  ASSERT_EQ(input_commands.size(), output_contexts.size());
 
-  for (int i = 0; i < expected.size(); i++) {
-    EXPECT_EQ((unsigned long long)expected[i].index * 64, real[i].addr);
+  for (int i = 0; i < input_commands.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
+              output_reqs[i].addr);
+  }
+  for (int i = 0; i < input_commands.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
+              output_contexts[i].addr);
   }
 }
 
 TEST(test_cmd_dispatcher, bank_1_dispatch) {
-  std::vector<Command> expected;
-  std::vector<Chip_Read_Req> real;
+  std::vector<Command> input_commands;
+  std::vector<Chip_Read_Req> output_reqs;
+  std::vector<Chip_Read_Req> output_contexts;
+
   cmd_dispatcher_context context;
 
   // generate bank 1 command
   for (int i = 0; i < TEST_NUM_OF_COMMANDS; i++) {
     Command command = RandomGen::rand_command(1, true);
-    expected.push_back(command);
+    input_commands.push_back(command);
     context.command_queue->write(command);
   }
 
   RUN_METHOD(TEST_NUM_OF_COMMANDS, INVOKE_CMD_DISPATCHER_IMPL(context));
 
-  drain_queue(context.chip_read_req_queue_1.get(), &real);
+  drain_queue(context.chip_read_req_queue_1.get(), &output_reqs);
+  drain_queue(context.chip_read_req_context_1.get(), &output_contexts);
 
-  ASSERT_EQ(expected.size(), real.size());
+  ASSERT_EQ(input_commands.size(), output_reqs.size());
+  ASSERT_EQ(input_commands.size(), output_contexts.size());
 
-  for (int i = 0; i < expected.size(); i++) {
-    EXPECT_EQ((unsigned long long)expected[i].index * 64, real[i].addr);
+  for (int i = 0; i < input_commands.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
+              output_reqs[i].addr);
+  }
+  for (int i = 0; i < input_commands.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
+              output_reqs[i].addr);
   }
 }
 
 TEST(test_cmd_dispatcher, bank_2_dispatch) {
-  std::vector<Command> expected;
-  std::vector<Chip_Read_Req> real;
+  std::vector<Command> input_commands;
+  std::vector<Chip_Read_Req> output_reqs;
+  std::vector<Chip_Read_Req> output_contexts;
   cmd_dispatcher_context context;
 
   // generate bank 2 command
   for (int i = 0; i < TEST_NUM_OF_COMMANDS; i++) {
     Command command = RandomGen::rand_command(2, true);
-    expected.push_back(command);
+    input_commands.push_back(command);
     context.command_queue->write(command);
   }
 
   RUN_METHOD(TEST_NUM_OF_COMMANDS, INVOKE_CMD_DISPATCHER_IMPL(context));
 
-  drain_queue(context.chip_read_req_queue_2.get(), &real);
+  drain_queue(context.chip_read_req_queue_2.get(), &output_reqs);
+  drain_queue(context.chip_read_req_context_2.get(), &output_contexts);
 
-  ASSERT_EQ(expected.size(), real.size());
+  ASSERT_EQ(input_commands.size(), output_reqs.size());
+  ASSERT_EQ(input_commands.size(), output_contexts.size());
 
-  for (int i = 0; i < expected.size(); i++) {
-    EXPECT_EQ((unsigned long long)expected[i].index * 64, real[i].addr);
+  for (int i = 0; i < input_commands.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
+              output_reqs[i].addr);
+  }
+  for (int i = 0; i < input_commands.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
+              output_reqs[i].addr);
   }
 }
 
 TEST(test_cmd_dispatcher, bank_3_dispatch) {
-  std::vector<Command> expected;
-  std::vector<Chip_Read_Req> real;
+  std::vector<Command> input_commands;
+  std::vector<Chip_Read_Req> output_reqs;
+  std::vector<Chip_Read_Req> output_contexts;
   cmd_dispatcher_context context;
 
   // generate bank 3 command
   for (int i = 0; i < TEST_NUM_OF_COMMANDS; i++) {
     Command command = RandomGen::rand_command(3, true);
-    expected.push_back(command);
+    input_commands.push_back(command);
     context.command_queue->write(command);
   }
 
   RUN_METHOD(TEST_NUM_OF_COMMANDS, INVOKE_CMD_DISPATCHER_IMPL(context));
 
-  drain_queue(context.chip_read_req_queue_3.get(), &real);
+  drain_queue(context.chip_read_req_queue_3.get(), &output_reqs);
+  drain_queue(context.chip_read_req_context_3.get(), &output_contexts);
 
-  ASSERT_EQ(expected.size(), real.size());
+  ASSERT_EQ(input_commands.size(), output_reqs.size());
+  ASSERT_EQ(input_commands.size(), output_contexts.size());
 
-  for (int i = 0; i < expected.size(); i++) {
-    EXPECT_EQ((unsigned long long)expected[i].index * 64, real[i].addr);
+  for (int i = 0; i < input_commands.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
+              output_reqs[i].addr);
+  }
+  for (int i = 0; i < input_commands.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands[i].index * 64,
+              output_reqs[i].addr);
   }
 }
 
 TEST(test_cmd_dispatcher, all_bank_dispatch_random) {
-  std::vector<Command> expected_bank_0;
-  std::vector<Command> expected_bank_1;
-  std::vector<Command> expected_bank_2;
-  std::vector<Command> expected_bank_3;
+  std::vector<Command> input_commands_0;
+  std::vector<Command> input_commands_1;
+  std::vector<Command> input_commands_2;
+  std::vector<Command> input_commands_3;
 
-  std::vector<Chip_Read_Req> real_bank_0;
-  std::vector<Chip_Read_Req> real_bank_1;
-  std::vector<Chip_Read_Req> real_bank_2;
-  std::vector<Chip_Read_Req> real_bank_3;
+  std::vector<Chip_Read_Req> output_reqs_0;
+  std::vector<Chip_Read_Req> output_reqs_1;
+  std::vector<Chip_Read_Req> output_reqs_2;
+  std::vector<Chip_Read_Req> output_reqs_3;
+
+  std::vector<Chip_Read_Req> output_contexts_0;
+  std::vector<Chip_Read_Req> output_contexts_1;
+  std::vector<Chip_Read_Req> output_contexts_2;
+  std::vector<Chip_Read_Req> output_contexts_3;
 
   cmd_dispatcher_context context;
 
@@ -174,16 +213,16 @@ TEST(test_cmd_dispatcher, all_bank_dispatch_random) {
     Command command = RandomGen::rand_command();
     switch (((unsigned long long)command.index) & 3) {
       case 0:
-        expected_bank_0.push_back(command);
+        input_commands_0.push_back(command);
         break;
       case 1:
-        expected_bank_1.push_back(command);
+        input_commands_1.push_back(command);
         break;
       case 2:
-        expected_bank_2.push_back(command);
+        input_commands_2.push_back(command);
         break;
       case 3:
-        expected_bank_3.push_back(command);
+        input_commands_3.push_back(command);
         break;
     }
     context.command_queue->write(command);
@@ -191,99 +230,140 @@ TEST(test_cmd_dispatcher, all_bank_dispatch_random) {
 
   RUN_METHOD(TEST_NUM_OF_COMMANDS, INVOKE_CMD_DISPATCHER_IMPL(context));
 
-  drain_queue(context.chip_read_req_queue_0.get(), &real_bank_0);
-  drain_queue(context.chip_read_req_queue_1.get(), &real_bank_1);
-  drain_queue(context.chip_read_req_queue_2.get(), &real_bank_2);
-  drain_queue(context.chip_read_req_queue_3.get(), &real_bank_3);
+  drain_queue(context.chip_read_req_queue_0.get(), &output_reqs_0);
+  drain_queue(context.chip_read_req_queue_1.get(), &output_reqs_1);
+  drain_queue(context.chip_read_req_queue_2.get(), &output_reqs_2);
+  drain_queue(context.chip_read_req_queue_3.get(), &output_reqs_3);
 
-  ASSERT_EQ(expected_bank_0.size(), real_bank_0.size());
-  ASSERT_EQ(expected_bank_1.size(), real_bank_1.size());
-  ASSERT_EQ(expected_bank_2.size(), real_bank_2.size());
-  ASSERT_EQ(expected_bank_3.size(), real_bank_3.size());
+  drain_queue(context.chip_read_req_context_0.get(), &output_contexts_0);
+  drain_queue(context.chip_read_req_context_1.get(), &output_contexts_1);
+  drain_queue(context.chip_read_req_context_2.get(), &output_contexts_2);
+  drain_queue(context.chip_read_req_context_3.get(), &output_contexts_3);
 
-  for (int i = 0; i < expected_bank_0.size(); i++) {
-    EXPECT_EQ((unsigned long long)expected_bank_0[i].index * 64, 
-              real_bank_0[i].addr);
+  ASSERT_EQ(input_commands_0.size(), output_reqs_0.size());
+  ASSERT_EQ(input_commands_1.size(), output_reqs_1.size());
+  ASSERT_EQ(input_commands_2.size(), output_reqs_2.size());
+  ASSERT_EQ(input_commands_3.size(), output_reqs_3.size());
+
+  ASSERT_EQ(input_commands_0.size(), output_contexts_0.size());
+  ASSERT_EQ(input_commands_1.size(), output_contexts_1.size());
+  ASSERT_EQ(input_commands_2.size(), output_contexts_2.size());
+  ASSERT_EQ(input_commands_3.size(), output_contexts_3.size());
+
+  for (int i = 0; i < input_commands_0.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands_0[i].index * 64,
+              output_reqs_0[i].addr);
+    EXPECT_EQ((unsigned long long)input_commands_0[i].index * 64,
+              output_contexts_0[i].addr);
   }
 
-  for (int i = 0; i < expected_bank_1.size(); i++) {
-    EXPECT_EQ((unsigned long long)expected_bank_1[i].index * 64,
-              real_bank_1[i].addr);
+  for (int i = 0; i < input_commands_1.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands_1[i].index * 64,
+              output_reqs_1[i].addr);
+    EXPECT_EQ((unsigned long long)input_commands_1[i].index * 64,
+              output_contexts_1[i].addr);
   }
 
-  for (int i = 0; i < expected_bank_2.size(); i++) {
-    EXPECT_EQ((unsigned long long)expected_bank_2[i].index * 64,
-              real_bank_2[i].addr);
+  for (int i = 0; i < input_commands_2.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands_2[i].index * 64,
+              output_reqs_2[i].addr);
+    EXPECT_EQ((unsigned long long)input_commands_2[i].index * 64,
+              output_contexts_2[i].addr);
   }
 
-  for (int i = 0; i < expected_bank_3.size(); i++) {
-    EXPECT_EQ((unsigned long long)expected_bank_3[i].index * 64,
-              real_bank_3[i].addr);
+  for (int i = 0; i < input_commands_3.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands_3[i].index * 64,
+              output_reqs_3[i].addr);
+    EXPECT_EQ((unsigned long long)input_commands_3[i].index * 64,
+              output_contexts_3[i].addr);
   }
 }
 
 TEST(test_cmd_dispatcher, all_bank_dispatch_interleave) {
   // generate & input `command` in round robin manner
 
-  std::vector<Command> expected_bank_0;
-  std::vector<Command> expected_bank_1;
-  std::vector<Command> expected_bank_2;
-  std::vector<Command> expected_bank_3;
+  std::vector<Command> input_commands_0;
+  std::vector<Command> input_commands_1;
+  std::vector<Command> input_commands_2;
+  std::vector<Command> input_commands_3;
 
-  std::vector<Chip_Read_Req> real_bank_0;
-  std::vector<Chip_Read_Req> real_bank_1;
-  std::vector<Chip_Read_Req> real_bank_2;
-  std::vector<Chip_Read_Req> real_bank_3;
+  std::vector<Chip_Read_Req> output_reqs_0;
+  std::vector<Chip_Read_Req> output_reqs_1;
+  std::vector<Chip_Read_Req> output_reqs_2;
+  std::vector<Chip_Read_Req> output_reqs_3;
+
+  std::vector<Chip_Read_Req> output_contexts_0;
+  std::vector<Chip_Read_Req> output_contexts_1;
+  std::vector<Chip_Read_Req> output_contexts_2;
+  std::vector<Chip_Read_Req> output_contexts_3;
 
   cmd_dispatcher_context context;
 
   for (int i = 0; i < TEST_NUM_OF_COMMANDS; i++) {
     Command command = RandomGen::rand_command(0, true);
-    expected_bank_0.push_back(command);
+    input_commands_0.push_back(command);
     context.command_queue->write(command);
 
     command = RandomGen::rand_command(1, true);
-    expected_bank_1.push_back(command);
+    input_commands_1.push_back(command);
     context.command_queue->write(command);
 
     command = RandomGen::rand_command(2, true);
-    expected_bank_2.push_back(command);
+    input_commands_2.push_back(command);
     context.command_queue->write(command);
 
     command = RandomGen::rand_command(3, true);
-    expected_bank_3.push_back(command);
+    input_commands_3.push_back(command);
     context.command_queue->write(command);
   }
 
   RUN_METHOD(4 * TEST_NUM_OF_COMMANDS, INVOKE_CMD_DISPATCHER_IMPL(context));
 
-  drain_queue(context.chip_read_req_queue_0.get(), &real_bank_0);
-  drain_queue(context.chip_read_req_queue_1.get(), &real_bank_1);
-  drain_queue(context.chip_read_req_queue_2.get(), &real_bank_2);
-  drain_queue(context.chip_read_req_queue_3.get(), &real_bank_3);
+  drain_queue(context.chip_read_req_queue_0.get(), &output_reqs_0);
+  drain_queue(context.chip_read_req_queue_1.get(), &output_reqs_1);
+  drain_queue(context.chip_read_req_queue_2.get(), &output_reqs_2);
+  drain_queue(context.chip_read_req_queue_3.get(), &output_reqs_3);
 
-  ASSERT_EQ(expected_bank_0.size(), real_bank_0.size());
-  ASSERT_EQ(expected_bank_1.size(), real_bank_1.size());
-  ASSERT_EQ(expected_bank_2.size(), real_bank_2.size());
-  ASSERT_EQ(expected_bank_3.size(), real_bank_3.size());
+  drain_queue(context.chip_read_req_context_0.get(), &output_contexts_0);
+  drain_queue(context.chip_read_req_context_1.get(), &output_contexts_1);
+  drain_queue(context.chip_read_req_context_2.get(), &output_contexts_2);
+  drain_queue(context.chip_read_req_context_3.get(), &output_contexts_3);
 
-  for (int i = 0; i < expected_bank_0.size(); i++) {
-    EXPECT_EQ((unsigned long long)expected_bank_0[i].index * 64, 
-              real_bank_0[i].addr);
+  ASSERT_EQ(input_commands_0.size(), output_reqs_0.size());
+  ASSERT_EQ(input_commands_1.size(), output_reqs_1.size());
+  ASSERT_EQ(input_commands_2.size(), output_reqs_2.size());
+  ASSERT_EQ(input_commands_3.size(), output_reqs_3.size());
+
+  ASSERT_EQ(input_commands_0.size(), output_contexts_0.size());
+  ASSERT_EQ(input_commands_1.size(), output_contexts_1.size());
+  ASSERT_EQ(input_commands_2.size(), output_contexts_2.size());
+  ASSERT_EQ(input_commands_3.size(), output_contexts_3.size());
+
+  for (int i = 0; i < input_commands_0.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands_0[i].index * 64,
+              output_reqs_0[i].addr);
+    EXPECT_EQ((unsigned long long)input_commands_0[i].index * 64,
+              output_contexts_0[i].addr);
   }
 
-  for (int i = 0; i < expected_bank_1.size(); i++) {
-    EXPECT_EQ((unsigned long long)expected_bank_1[i].index * 64,
-              real_bank_1[i].addr);
+  for (int i = 0; i < input_commands_1.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands_1[i].index * 64,
+              output_reqs_1[i].addr);
+    EXPECT_EQ((unsigned long long)input_commands_1[i].index * 64,
+              output_contexts_1[i].addr);
   }
 
-  for (int i = 0; i < expected_bank_2.size(); i++) {
-    EXPECT_EQ((unsigned long long)expected_bank_2[i].index * 64,
-              real_bank_2[i].addr);
+  for (int i = 0; i < input_commands_2.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands_2[i].index * 64,
+              output_reqs_2[i].addr);
+    EXPECT_EQ((unsigned long long)input_commands_2[i].index * 64,
+              output_contexts_2[i].addr);
   }
 
-  for (int i = 0; i < expected_bank_3.size(); i++) {
-    EXPECT_EQ((unsigned long long)expected_bank_3[i].index * 64,
-              real_bank_3[i].addr);
+  for (int i = 0; i < input_commands_3.size(); i++) {
+    EXPECT_EQ((unsigned long long)input_commands_3[i].index * 64,
+              output_reqs_3[i].addr);
+    EXPECT_EQ((unsigned long long)input_commands_3[i].index * 64,
+              output_contexts_3[i].addr);
   }
 }
