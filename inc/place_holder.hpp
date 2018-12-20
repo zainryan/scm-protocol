@@ -1,6 +1,7 @@
 #pragma once
 
 #include "chip.h"
+#include "cmd.h"
 #include "staccel_type.h"
 
 void place_holder(ST_Queue<Command> *command_queue,
