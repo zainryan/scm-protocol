@@ -57,14 +57,15 @@ do
     cd build/$kernelName
     synthesis $kernelName
     staccel_s2s_kernel $fileName -- -I/usr/include/staccel -I/usr/include/insider -I/usr/include/hls_csim \
-	| clang-format --style=llvm 1>../interconnects/$fileName &
+	| clang-format --style=llvm 1>../interconnects/$fileName & pids_s2s+=($!)
     cd ../..
 done
 
 staccel_s2s_interconnect interconnects.cpp -- -I/usr/include/staccel -I/usr/include/hls_csim -I/usr/include/insider -I inc -I kernels \
-    | clang-format --style=llvm 1>build/interconnects/interconnects.cpp
+    | clang-format --style=llvm 1>build/interconnects/interconnects.cpp & pids_s2s+=($!)
 cp inc/* build/interconnects 1>/dev/null 2>&1
 cd build/interconnects
+wait "${pids_s2s[@]}"
 synthesis interconnects
 cd ../../
 wait
