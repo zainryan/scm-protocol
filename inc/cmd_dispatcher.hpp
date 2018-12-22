@@ -13,7 +13,7 @@ struct Host_Write_Data {
   ap_uint<512> data;
 };
 
-void cmd_dispatcher_impl(ST_Queue<Command> *command_queue,
+void cmd_dispatcher_impl(ST_Queue<Unit_Command> *unit_command_queue,
                          ST_Queue<Host_Write_Data> *host_write_data_queue,
                          ST_Queue<Chip_Read_Req> *chip_read_req_queue_0,
                          ST_Queue<Chip_Read_Req> *chip_read_req_context_0,
@@ -28,7 +28,7 @@ void cmd_dispatcher_impl(ST_Queue<Command> *command_queue,
                          ST_Queue<Chip_Read_Req> *chip_read_req_context_3,
                          ST_Queue<Chip_Write_Req> *chip_write_req_queue_3);
 
-void cmd_dispatcher(ST_Queue<Command> *command_queue,
+void cmd_dispatcher(ST_Queue<Unit_Command> *unit_command_queue,
                     ST_Queue<Host_Write_Data> host_write_data_queue,
                     ST_Queue<Chip_Read_Req> *chip_read_req_queue_0,
                     ST_Queue<Chip_Read_Req> *chip_read_req_context_0,
