@@ -9,7 +9,7 @@
 #include "test_params.hpp"
 #include "test_utils.hpp"
 
-#ndefine TEST_NUM_OF_COMMANDS 10
+#define TEST_NUM_OF_COMMANDS 10
 #define QUEUE_DEPTH (32)
 #define INVOKE_READ_RESP_MUX_IMPL(context)                         \
   read_resp_mux_impl(context.chip_read_req_context_0.get(),        \
