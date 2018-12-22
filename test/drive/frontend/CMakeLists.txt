@@ -1,4 +1,5 @@
 add_subdirectory(cmd_splitter)
+add_subdirectory(read_resp_mux)
 add_subdirectory(pcis_handler)
 add_subdirectory(param_replicator)
 add_subdirectory(peek_handler)
