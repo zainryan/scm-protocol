@@ -12,47 +12,36 @@
 #define TEST_NUM_OF_COMMANDS 10
 #define QUEUE_DEPTH (32)
 #define INVOKE_READ_RESP_MUX_IMPL(context)                         \
-  read_resp_mux_impl(context.chip_read_req_context_0.get(),        \
-                     context.chip_read_resp_queue_0.get(),         \
-                     context.chip_read_req_context_1.get(),        \
-                     context.chip_read_resp_queue_1.get(),         \
-                     context.chip_read_req_context_2.get(),        \
-                     context.chip_read_resp_queue_2.get(),         \
-                     context.chip_read_req_context_3.get(),        \
-                     context.chip_read_resp_queue_3.get(),         \
+  read_resp_mux_impl(context.chip_read_req_context[0].get(),       \
+                     context.chip_read_resp_queue[0].get(),        \
+                     context.chip_read_req_context[1].get(),       \
+                     context.chip_read_resp_queue[1].get(),        \
+                     context.chip_read_req_context[2].get(),       \
+                     context.chip_read_resp_queue[2].get(),        \
+                     context.chip_read_req_context[3].get(),       \
+                     context.chip_read_resp_queue[3].get(),        \
                      context.chip_read_resp_with_addr_queue.get(), \
                      &(context.write_lease))
 
 struct Read_Resp_Mux_Context {
-  std::unique_ptr<ST_Queue<Chip_Read_Req>> chip_read_req_context_0;
-  std::unique_ptr<ST_Queue<Chip_Read_Resp>> chip_read_resp_queue_0;
-  std::unique_ptr<ST_Queue<Chip_Read_Req>> chip_read_req_context_1;
-  std::unique_ptr<ST_Queue<Chip_Read_Resp>> chip_read_resp_queue_1;
-  std::unique_ptr<ST_Queue<Chip_Read_Req>> chip_read_req_context_2;
-  std::unique_ptr<ST_Queue<Chip_Read_Resp>> chip_read_resp_queue_2;
-  std::unique_ptr<ST_Queue<Chip_Read_Req>> chip_read_req_context_3;
-  std::unique_ptr<ST_Queue<Chip_Read_Resp>> chip_read_resp_queue_3;
+  std::vector<std::unique_ptr<ST_Queue<Chip_Read_Req>>> chip_read_req_context;
+  std::vector<std::unique_ptr<ST_Queue<Chip_Read_Resp>>> chip_read_resp_queue;
   std::unique_ptr<ST_Queue<Chip_Read_Resp_With_Addr>>
       chip_read_resp_with_addr_queue;
   unsigned char write_lease = 0;
   Read_Resp_Mux_Context() {
-    chip_read_req_context_0.reset(new ST_Queue<Chip_Read_Req>(QUEUE_DEPTH));
-    chip_read_resp_queue_0.reset(new ST_Queue<Chip_Read_Resp>(QUEUE_DEPTH));
-    chip_read_req_context_1.reset(new ST_Queue<Chip_Read_Req>(QUEUE_DEPTH));
-    chip_read_resp_queue_1.reset(new ST_Queue<Chip_Read_Resp>(QUEUE_DEPTH));
-
-    chip_read_req_context_2.reset(new ST_Queue<Chip_Read_Req>(QUEUE_DEPTH));
-    chip_read_resp_queue_2.reset(new ST_Queue<Chip_Read_Resp>(QUEUE_DEPTH));
-
-    chip_read_req_context_3.reset(new ST_Queue<Chip_Read_Req>(QUEUE_DEPTH));
-    chip_read_resp_queue_3.reset(new ST_Queue<Chip_Read_Resp>(QUEUE_DEPTH));
-
+    chip_read_req_context.resize(4);
+    chip_read_resp_queue.resize(4);
+    for (int i = 0; i < NUM_OF_CHIP_BANKS; i++) {
+      chip_read_req_context[i].reset(new ST_Queue<Chip_Read_Req>(QUEUE_DEPTH));
+      chip_read_resp_queue[i].reset(new ST_Queue<Chip_Read_Resp>(QUEUE_DEPTH));
+    }
     chip_read_resp_with_addr_queue.reset(new ST_Queue<Chip_Read_Resp_With_Addr>(
         NUM_OF_CHIP_BANKS * QUEUE_DEPTH));
   }
 };
 
-TEST(read_resp_mux, bank_0_test) {
+TEST(test_read_resp_mux, bank_0_resemble) {
   Read_Resp_Mux_Context context;
   std::vector<std::vector<Chip_Read_Resp>> input_read_resps(NUM_OF_CHIP_BANKS);
   std::vector<std::vector<Chip_Read_Req>> input_read_reqs(NUM_OF_CHIP_BANKS);
@@ -60,23 +49,14 @@ TEST(read_resp_mux, bank_0_test) {
 
   for (int i = 0; i < TEST_NUM_OF_COMMANDS; i++) {
     Chip_Read_Resp chip_read_resp = RandomGen::rand_chip_read_resp();
-    Chip_Read_Req chip_read_req = RandomGen::rand_chip_read_req(0);
+    Chip_Read_Req chip_read_req = RandomGen::rand_chip_read_req(0 /*bank_id*/);
     input_read_resps[0].push_back(chip_read_resp);
     input_read_reqs[0].push_back(chip_read_req);
+    context.chip_read_resp_queue[0]->write(chip_read_resp);
+    context.chip_read_req_context[0]->write(chip_read_req);
   }
 
-  read_resp_mux_impl(context.chip_read_req_context_0.get(),
-                     context.chip_read_resp_queue_0.get(),
-                     context.chip_read_req_context_1.get(),
-                     context.chip_read_resp_queue_1.get(),
-                     context.chip_read_req_context_2.get(),
-                     context.chip_read_resp_queue_2.get(),
-                     context.chip_read_req_context_3.get(),
-                     context.chip_read_resp_queue_3.get(),
-                     context.chip_read_resp_with_addr_queue.get(),
-                     &(context.write_lease));
-
-  //  RUN_METHOD(TEST_NUM_OF_COMMANDS, INVOKE_READ_RESP_MUX_IMPL(context));
+  RUN_METHOD(4 * TEST_NUM_OF_COMMANDS, INVOKE_READ_RESP_MUX_IMPL(context));
 
   drain_queue(context.chip_read_resp_with_addr_queue.get(),
               &output_read_resp_with_addrs);
@@ -85,5 +65,92 @@ TEST(read_resp_mux, bank_0_test) {
   for (int i = 0; i < output_read_resp_with_addrs.size(); i++) {
     EXPECT_EQ(input_read_resps[0][i].data, output_read_resp_with_addrs[i].data);
     EXPECT_EQ(input_read_reqs[0][i].addr, output_read_resp_with_addrs[i].addr);
+  }
+}
+
+TEST(test_read_resp_mux, bank_1_resemble) {
+  Read_Resp_Mux_Context context;
+  std::vector<std::vector<Chip_Read_Resp>> input_read_resps(NUM_OF_CHIP_BANKS);
+  std::vector<std::vector<Chip_Read_Req>> input_read_reqs(NUM_OF_CHIP_BANKS);
+  std::vector<Chip_Read_Resp_With_Addr> output_read_resp_with_addrs;
+
+  for (int i = 0; i < TEST_NUM_OF_COMMANDS; i++) {
+    Chip_Read_Resp chip_read_resp = RandomGen::rand_chip_read_resp();
+    Chip_Read_Req chip_read_req = RandomGen::rand_chip_read_req(1 /*bank_id*/);
+    input_read_resps[1].push_back(chip_read_resp);
+    input_read_reqs[1].push_back(chip_read_req);
+    context.chip_read_resp_queue[1]->write(chip_read_resp);
+    context.chip_read_req_context[1]->write(chip_read_req);
+  }
+
+  RUN_METHOD(10 * TEST_NUM_OF_COMMANDS, INVOKE_READ_RESP_MUX_IMPL(context));
+
+  drain_queue(context.chip_read_resp_with_addr_queue.get(),
+              &output_read_resp_with_addrs);
+  ASSERT_EQ(input_read_resps[1].size(), output_read_resp_with_addrs.size());
+
+  for (int i = 0; i < output_read_resp_with_addrs.size(); i++) {
+    EXPECT_EQ(input_read_resps[1][i].data, output_read_resp_with_addrs[i].data);
+    EXPECT_EQ(input_read_reqs[1][i].addr, output_read_resp_with_addrs[i].addr);
+  }
+}
+
+TEST(test_read_resp_mux, bank_2_resemble) {
+  Read_Resp_Mux_Context context;
+  std::vector<std::vector<Chip_Read_Resp>>
+  input_read_resps(NUM_OF_CHIP_BANKS);
+  std::vector<std::vector<Chip_Read_Req>> input_read_reqs(NUM_OF_CHIP_BANKS);
+  std::vector<Chip_Read_Resp_With_Addr> output_read_resp_with_addrs;
+
+  for (int i = 0; i < TEST_NUM_OF_COMMANDS; i++) {
+    Chip_Read_Resp chip_read_resp = RandomGen::rand_chip_read_resp();
+    Chip_Read_Req chip_read_req = RandomGen::rand_chip_read_req(2);
+    input_read_resps[2].push_back(chip_read_resp);
+    input_read_reqs[2].push_back(chip_read_req);
+    context.chip_read_resp_queue[2]->write(chip_read_resp);
+    context.chip_read_req_context[2]->write(chip_read_req);
+  }
+
+  RUN_METHOD(4 * TEST_NUM_OF_COMMANDS, INVOKE_READ_RESP_MUX_IMPL(context));
+
+  drain_queue(context.chip_read_resp_with_addr_queue.get(),
+              &output_read_resp_with_addrs);
+  ASSERT_EQ(input_read_resps[2].size(), output_read_resp_with_addrs.size());
+
+  for (int i = 0; i < output_read_resp_with_addrs.size(); i++) {
+    EXPECT_EQ(input_read_resps[2][i].data,
+    output_read_resp_with_addrs[i].data);
+    EXPECT_EQ(input_read_reqs[2][i].addr,
+    output_read_resp_with_addrs[i].addr);
+  }
+}
+
+TEST(test_read_resp_mux, bank_3_resemble) {
+  Read_Resp_Mux_Context context;
+  std::vector<std::vector<Chip_Read_Resp>>
+  input_read_resps(NUM_OF_CHIP_BANKS);
+  std::vector<std::vector<Chip_Read_Req>> input_read_reqs(NUM_OF_CHIP_BANKS);
+  std::vector<Chip_Read_Resp_With_Addr> output_read_resp_with_addrs;
+
+  for (int i = 0; i < TEST_NUM_OF_COMMANDS; i++) {
+    Chip_Read_Resp chip_read_resp = RandomGen::rand_chip_read_resp();
+    Chip_Read_Req chip_read_req = RandomGen::rand_chip_read_req(3);
+    input_read_resps[3].push_back(chip_read_resp);
+    input_read_reqs[3].push_back(chip_read_req);
+    context.chip_read_resp_queue[3]->write(chip_read_resp);
+    context.chip_read_req_context[3]->write(chip_read_req);
+  }
+
+  RUN_METHOD(4 * TEST_NUM_OF_COMMANDS, INVOKE_READ_RESP_MUX_IMPL(context));
+
+  drain_queue(context.chip_read_resp_with_addr_queue.get(),
+              &output_read_resp_with_addrs);
+  ASSERT_EQ(input_read_resps[3].size(), output_read_resp_with_addrs.size());
+
+  for (int i = 0; i < output_read_resp_with_addrs.size(); i++) {
+    EXPECT_EQ(input_read_resps[3][i].data,
+    output_read_resp_with_addrs[i].data);
+    EXPECT_EQ(input_read_reqs[3][i].addr,
+    output_read_resp_with_addrs[i].addr);
   }
 }
