@@ -232,9 +232,8 @@ TEST(test_cmd_dispatcher, all_bank_dispatch_interleave) {
   cmd_dispatcher_context context;
 
   for (int i = 0; i < TEST_NUM_OF_COMMANDS; i++) {
-    Unit_Command unit_command;
     for (int bank_id = 0; bank_id < NUM_OF_CHIP_BANKS; bank_id++) {
-      unit_command =
+      Unit_Command unit_command =
           RandomGen::rand_unit_command(bank_id /*bank_id*/, true /*is_read*/);
       input_unit_commands[bank_id].push_back(unit_command);
       context.unit_command_queue->write(unit_command);
