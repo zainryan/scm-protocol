@@ -1,4 +1,5 @@
 add_subdirectory(cmd_splitter)
+add_subdirectory(cmd_intrpr)
 add_subdirectory(pcis_handler)
 add_subdirectory(param_replicator)
 add_subdirectory(peek_handler)

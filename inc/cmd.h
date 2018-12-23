@@ -16,3 +16,12 @@ struct Command {
   // Indicate it's a read IO or write IO.
   bool is_read;
 };
+
+struct Unit_Command {
+  // The index to the drive sub-block (64B).
+  ap_uint<50> index;
+  // The number of sub-block would being accessed.
+  ap_uint<15> num = 1;
+  // Indicate it's a read IO or write IO.
+  bool is_read;
+};
