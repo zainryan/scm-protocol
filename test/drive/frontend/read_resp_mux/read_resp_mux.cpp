@@ -23,13 +23,13 @@
                      context.chip_read_resp_with_addr_queue.get(), \
                      &(context.write_lease))
 
-struct Read_Resp_Mux_Context {
+struct ReadRespMuxTestContext {
   std::vector<std::unique_ptr<ST_Queue<Chip_Read_Req>>> chip_read_req_context;
   std::vector<std::unique_ptr<ST_Queue<Chip_Read_Resp>>> chip_read_resp_queue;
   std::unique_ptr<ST_Queue<Chip_Read_Resp_With_Addr>>
       chip_read_resp_with_addr_queue;
   unsigned char write_lease = 0;
-  Read_Resp_Mux_Context() {
+  ReadRespMuxTestContext() {
     chip_read_req_context.resize(4);
     chip_read_resp_queue.resize(4);
     for (int i = 0; i < NUM_OF_CHIP_BANKS; i++) {
@@ -41,8 +41,8 @@ struct Read_Resp_Mux_Context {
   }
 };
 
-TEST(test_read_resp_mux, bank_0_resemble) {
-  Read_Resp_Mux_Context context;
+TEST(test_read_resp_mux, bank_0_only) {
+  ReadRespMuxTestContext context;
   std::vector<std::vector<Chip_Read_Resp>> input_read_resps(NUM_OF_CHIP_BANKS);
   std::vector<std::vector<Chip_Read_Req>> input_read_reqs(NUM_OF_CHIP_BANKS);
   std::vector<Chip_Read_Resp_With_Addr> output_read_resp_with_addrs;
@@ -68,8 +68,8 @@ TEST(test_read_resp_mux, bank_0_resemble) {
   }
 }
 
-TEST(test_read_resp_mux, bank_1_resemble) {
-  Read_Resp_Mux_Context context;
+TEST(test_read_resp_mux, bank_1_only) {
+  ReadRespMuxTestContext context;
   std::vector<std::vector<Chip_Read_Resp>> input_read_resps(NUM_OF_CHIP_BANKS);
   std::vector<std::vector<Chip_Read_Req>> input_read_reqs(NUM_OF_CHIP_BANKS);
   std::vector<Chip_Read_Resp_With_Addr> output_read_resp_with_addrs;
@@ -95,8 +95,8 @@ TEST(test_read_resp_mux, bank_1_resemble) {
   }
 }
 
-TEST(test_read_resp_mux, bank_2_resemble) {
-  Read_Resp_Mux_Context context;
+TEST(test_read_resp_mux, bank_2_only) {
+  ReadRespMuxTestContext context;
   std::vector<std::vector<Chip_Read_Resp>> input_read_resps(NUM_OF_CHIP_BANKS);
   std::vector<std::vector<Chip_Read_Req>> input_read_reqs(NUM_OF_CHIP_BANKS);
   std::vector<Chip_Read_Resp_With_Addr> output_read_resp_with_addrs;
@@ -122,8 +122,8 @@ TEST(test_read_resp_mux, bank_2_resemble) {
   }
 }
 
-TEST(test_read_resp_mux, bank_3_resemble) {
-  Read_Resp_Mux_Context context;
+TEST(test_read_resp_mux, bank_3_only) {
+  ReadRespMuxTestContext context;
   std::vector<std::vector<Chip_Read_Resp>> input_read_resps(NUM_OF_CHIP_BANKS);
   std::vector<std::vector<Chip_Read_Req>> input_read_reqs(NUM_OF_CHIP_BANKS);
   std::vector<Chip_Read_Resp_With_Addr> output_read_resp_with_addrs;
@@ -149,8 +149,8 @@ TEST(test_read_resp_mux, bank_3_resemble) {
   }
 }
 
-TEST(test_read_resp_mux, all_bank_resemble) {
-  Read_Resp_Mux_Context context;
+TEST(test_read_resp_mux, all_bank) {
+  ReadRespMuxTestContext context;
   std::vector<std::vector<Chip_Read_Resp>> input_read_resps(NUM_OF_CHIP_BANKS);
   std::vector<std::vector<Chip_Read_Req>> input_read_reqs(NUM_OF_CHIP_BANKS);
   std::vector<Chip_Read_Resp_With_Addr> output_read_resp_with_addrs;

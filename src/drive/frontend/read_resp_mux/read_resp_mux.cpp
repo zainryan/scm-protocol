@@ -7,8 +7,7 @@ inline void read_resp_handler(
     const Chip_Read_Req &chip_read_req, const Chip_Read_Resp &chip_read_resp,
     ST_Queue<Chip_Read_Resp_With_Addr> *chip_read_resp_with_addr_queue) {
   Chip_Read_Resp_With_Addr chip_read_resp_with_addr;
-  chip_read_resp_with_addr.addr =
-      chip_read_req.addr;  // TODO(@zainry): what is the relation here??
+  chip_read_resp_with_addr.addr = chip_read_req.addr;
   chip_read_resp_with_addr.data = chip_read_resp.data;
   chip_read_resp_with_addr_queue->write(chip_read_resp_with_addr);
 }
@@ -73,8 +72,8 @@ void read_resp_mux(
     ST_Queue<Chip_Read_Resp> *chip_read_resp_queue_2,
     ST_Queue<Chip_Read_Req> *read_req_context_3,
     ST_Queue<Chip_Read_Resp> *chip_read_resp_queue_3,
-    ST_Queue<Chip_Read_Resp_With_Addr> *chip_read_resp_with_addr_queue,
-    unsigned char write_lease = 0) {
+    ST_Queue<Chip_Read_Resp_With_Addr> *chip_read_resp_with_addr_queue) {
+  unsigned char write_lease = 0;
   while (1) {
 #pragma HLS pipeline
     read_resp_mux_impl(read_req_context_0, chip_read_resp_queue_0,

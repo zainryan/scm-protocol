@@ -3,3 +3,5 @@ build
 *.swo
 *~
 staccel_proj
+*#
+\.#*
