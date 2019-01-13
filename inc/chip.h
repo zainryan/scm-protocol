@@ -18,3 +18,7 @@ struct Chip_Write_Req {
   unsigned long long addr;
   ap_uint<512> data;
 };
+
+struct Host_Write_Data {
+  ap_uint<512> data;
+};

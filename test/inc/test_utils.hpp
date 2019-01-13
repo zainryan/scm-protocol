@@ -33,13 +33,18 @@ inline unsigned long long rand_u_long_long() {
   return ret;
 }
 
+inline Host_Write_Data rand_host_write_data() {
+  Host_Write_Data host_write_data;
+  host_write_data.data = (ap_uint<512>)rand_u_long_long();
+  return host_write_data;
+}
+
 inline Unit_Command rand_unit_command(unsigned char bank_id, bool is_read) {
   Unit_Command unit_command;
   unit_command.index =
       (ap_uint<COMMAND_INDEX_SIZE_IN_BIT>)((rand_u_long_long()
                                             << LOG2_NUM_OF_CHIP_BANKS) |
-                                           bank_id);  // TODO: small issue here
-  unit_command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>)1;
+                                           bank_id);
   unit_command.is_read = is_read;
   return unit_command;
 }
@@ -47,7 +52,6 @@ inline Unit_Command rand_unit_command(unsigned char bank_id, bool is_read) {
 inline Unit_Command rand_read_unit_command() {
   Unit_Command unit_command;
   unit_command.index = (ap_uint<COMMAND_INDEX_SIZE_IN_BIT>)rand_u_long_long();
-  unit_command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>)1;
   unit_command.is_read = true;
   return unit_command;
 }
@@ -55,7 +59,6 @@ inline Unit_Command rand_read_unit_command() {
 inline Unit_Command rand_unit_command() {
   Unit_Command unit_command;
   unit_command.index = (ap_uint<COMMAND_INDEX_SIZE_IN_BIT>)rand_u_long_long();
-  unit_command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>)1;
   unit_command.is_read = (bool)(rand() % 2);
   return unit_command;
 }

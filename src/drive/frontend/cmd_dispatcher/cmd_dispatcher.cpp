@@ -13,7 +13,6 @@ inline void read_cmd_handler(const Unit_Command &unit_command,
   chip_read_req_context->write(chip_read_req);
 }
 
-// TODO: design the data input and output channel and data floorplan
 inline void write_cmd_handler(const Unit_Command &unit_command,
                               const Host_Write_Data &host_write_data,
                               ST_Queue<Chip_Write_Req> *chip_write_req_queue) {
