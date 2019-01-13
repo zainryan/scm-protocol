@@ -1,3 +1,4 @@
+add_subdirectory(cmd_dispatcher)
 add_subdirectory(cmd_splitter)
 add_subdirectory(read_resp_mux)
 add_subdirectory(pcis_handler)
