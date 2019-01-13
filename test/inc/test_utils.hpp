@@ -33,7 +33,6 @@ inline unsigned long long rand_u_long_long() {
   return ret;
 }
 
-
 inline Chip_Read_Req rand_chip_read_req(unsigned char bank_id) {
   Chip_Read_Req chip_read_req;
   chip_read_req.addr =
