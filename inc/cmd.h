@@ -17,7 +17,6 @@ struct Command {
   bool is_read;
 };
 
-// command with num == 1
 struct Unit_Command {
   // The index to the drive sub-block (64B).
   ap_uint<50> index;
