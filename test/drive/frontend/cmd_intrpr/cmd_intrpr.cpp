@@ -1,4 +1,4 @@
-#include<cstdlib>
+#include <cstdlib>
 #include <vector>
 
 #include "cmd.h"
@@ -17,7 +17,7 @@
                   context.unit_command_queue.get(), &(context.command), \
                   &(context.unit_command), &(context.num_of_command_left))
 
-    struct CmdIntrprTestContext {
+struct CmdIntrprTestContext {
   std::unique_ptr<ST_Queue<Command>> command_queue;
   std::unique_ptr<ST_Queue<Unit_Command>> unit_command_queue;
   Command command;
