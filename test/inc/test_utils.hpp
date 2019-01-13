@@ -33,6 +33,14 @@ inline unsigned long long rand_u_long_long() {
   return ret;
 }
 
+inline Command rand_command(int num) {
+  Command command;
+  command.index = (ap_uint<COMMAND_INDEX_SIZE_IN_BIT>)rand_u_long_long();
+  command.num = (ap_uint<COMMAND_NUM_SIZE_IN_BIT>)num;
+  command.is_read = (bool)(rand() % 2);
+  return command;
+}
+
 inline Command rand_command() {
   Command command;
   int command_num = rand();
@@ -136,4 +144,8 @@ bool operator==(const Chip_Read_Resp_With_Time &a,
 bool operator==(const Chip_Write_Req_With_Time &a,
                 const Chip_Write_Req_With_Time &b) {
   return (a.raw == b.raw) && (a.timestamp == b.timestamp);
+}
+
+bool operator==(const Command &a, const Unit_Command &b) {
+  return (a.index == b.index) && (a.is_read == b.is_read) && (a.num == 1);
 }
