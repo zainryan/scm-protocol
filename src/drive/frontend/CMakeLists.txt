@@ -1,3 +1,4 @@
+add_subdirectory(cmd_dispatcher)
 add_subdirectory(cmd_splitter)
 add_subdirectory(cmd_intrpr)
 add_subdirectory(pcis_handler)
